@@ -65,7 +65,7 @@ npm install
 
 ### Roadmap
 
-![Roadmap]("./roadmap.jpg")
+![Roadmap]("geomusic/roadmap.jpg")
 
 
 
