@@ -7,9 +7,9 @@
   "engines": {
     "node": ">=6.4.0"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
+    "webpack": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
