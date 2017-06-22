@@ -65,7 +65,7 @@ npm install
 
 ### Roadmap
 
-![Roadmap]("https://github.com/intriguing-iguanas/geomusic/roadmap.jpg")
+![alt text]("https://github.com/intriguing-iguanas/geomusic/roadmap.jpg")
 
 
 
