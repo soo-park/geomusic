@@ -6,6 +6,10 @@ var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 
+app.get('/heroku', function (req, res) {
+  res.send('hello world')
+})
+
 app.get('/items', function (req, res) {
   items.selectAll(function(err, data) {
     if(err) {
