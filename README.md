@@ -65,7 +65,7 @@ npm install
 
 ### Roadmap
 
-![alt text](/geomusic/roadmap.jpg)
+![alt text](roadmap.jpg)
 
 
 ## Contributing
