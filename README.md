@@ -22,17 +22,17 @@
 ## Usage
 
 > 1. User1
-> The user opens the app on his mobile, log into Spotify from it.
-> The user choose his playlist from his Spotify account.
-> The user adds the list to his location.
-> (The location and the playlist saves into the database)
-> 
+  - The user opens the app on his mobile, log into Spotify from it.
+  - The user choose his playlist from his Spotify account.
+  - The user adds the list to his location.
+  - (The location and the playlist saves into the database)
+ 
 > 2. User2
-> The user opens the app on his mobile, log into Spotify from it.
-> Finds the nearby playlist around the location.
-> Walks to the location, press the play button for the playlist.
-> The web app directs the playlist to ther user's Spotify app.
->  
+  - The user opens the app on his mobile, log into Spotify from it.
+  - Finds the nearby playlist around the location.
+  - Walks to the location, press the play button for the playlist.
+  - The web app directs the playlist to ther user's Spotify app.
+
 
 ## Requirements
 #### Dependancies
@@ -65,8 +65,7 @@ npm install
 
 ### Roadmap
 
-![alt text]("https://github.com/intriguing-iguanas/geomusic/roadmap.jpg")
-
+![alt text](/geomusic/roadmap.jpg)
 
 
 ## Contributing
