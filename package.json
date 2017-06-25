@@ -14,9 +14,11 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
     "jquery": "^3.2.1",
     "mongoose": "^4.10.7",
+    "querystring": "^0.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "request": "^2.81.0"
