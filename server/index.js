@@ -6,6 +6,7 @@ var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 
+
 app.get('/heroku', function (req, res) {
   res.send('Yay world')
 })
