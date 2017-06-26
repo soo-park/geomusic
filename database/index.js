@@ -1,5 +1,14 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/geomusic');
+
+// for development only: not for deployment
+// comment out before pull request:
+// var secret = require('../secret.js');
+
+// choose between env variables for Heroku or dev env
+var mongodb_user = process.env.MONGODB_USER || secret.MONGODB_USER;
+var mongodb_password = process.env.MONGODB_PASSWORD || secret.MONGODB_PASSWORD;
+
+mongoose.connect(`mongodb://${mongodb_user}:${mongodb_password}@ds139352.mlab.com:39352/geomusic`);
 var db = mongoose.connection;
 
 db.on('error', function() {
@@ -28,6 +37,13 @@ var selectAll = function(callback) {
     }
   });
 };
+
+// create a new db item for test:
+// Item.create({ quantity: 2, description: 'test' }, function(err) {
+//   if (err) {
+//     console.error(err);
+//   }
+// })
 
 module.exports.selectAll = selectAll;
 module.exports.Item = Item;
