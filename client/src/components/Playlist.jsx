@@ -1,7 +1,7 @@
 import React from 'react';
-import ListItem from './ListItem.jsx';
+import PlaylistItem from './PlaylistItem.jsx';
 
-const List = (props) => (
+const Playlist = (props) => (
   <div>
     <h4> List Component </h4>
     There are { props.items.length } items.
@@ -9,4 +9,4 @@ const List = (props) => (
   </div>
 )
 
-export default List;
+export default Playlist;
