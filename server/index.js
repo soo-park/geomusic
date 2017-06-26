@@ -69,7 +69,7 @@ var cookieParser = require('cookie-parser');
  * module.exports.CLIENT_ID='your client ID';
  * module.exports.CLIENT_SECRET='your client secret';
  * module.exports.REDIRECT_URI='http://localhost:3000/callback/'
- *
+ * https://geo-music.herokuapp.com/
  * and make sure you add the http://localhost:3000/callback/ to your white list
  * in spotify
 */
@@ -77,8 +77,11 @@ var cookieParser = require('cookie-parser');
 // choose between env variables for Heroku or dev env
 var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
-var redirect_uri = process.env.REDIRECT_URI || secret.REDIRECT_URI; // Your redirect uri
+var env = process.env.NODE_ENV || 'local';
 
+
+// setup the url for the Heroku or for the development
+var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https://geo-music.herokuapp.com/callback/';
 
 /**
  * Generates a random string containing numbers and letters
