@@ -14,6 +14,11 @@
         white-space: nowrap;
         width: 500px;
       }
+
+      #map {
+        height: 400px;
+        width: 100%;
+      }
     </style>
   </head>
 
@@ -31,6 +36,10 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
     </div>
+
+    <div id="map"></div>
+
+    <!-- Spotify Login -->
 
     <script id="user-profile-template" type="text/x-handlebars-template">
       <h1>Logged in as {{display_name}}</h1>
@@ -138,6 +147,64 @@
         }
       })();
     </script>
+
+    <!-- Google Map feature -->
+    <script>
+
+      function initMap() {
+
+        if ('geolocation' in navigator) {
+          //hardcoded coords from tutorial
+          const uluru = {lat: -25.363, lng: 131.044};
+
+          const map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: uluru
+          });
+
+          var marker = new google.maps.Marker({
+            position: uluru,
+            map: map
+          });
+
+          navigator.geolocation.getCurrentPosition( 
+            pos => {
+              map.panTo(new google.maps.LatLng(
+                pos.coords.latitude,
+                pos.coords.longitude
+              ));
+            },
+
+            err => {
+              alert(err);
+            });
+
+          navigator.geolocation.watchPosition( 
+            // On success, gets new position
+            pos => {
+              map.panTo(new google.maps.LatLng(
+                pos.coords.latitude,
+                pos.coords.longitude
+              ));
+            },
+            // Something fucked up
+            err => {
+              alert(err);
+            });
+
+        } else {
+          alert('Geolocation is not available on this device. Buy an iPhone and try again!');
+        }
+      }
+
+    </script>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3KHDKK_9Fniw2mrRcLLRl_QhawXHvC0s&callback=initMap">
+    </script>
+
+
+
   </body>
 </html>
 
