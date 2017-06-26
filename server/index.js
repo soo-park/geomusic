@@ -9,11 +9,6 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 // var items = require('../database');
 
-//  =========================== API secrets  =========================== 
-
-// // for development only: not for deployment
-// var secret = require('../secret.js');
-
 /// ===================== HEROKU TEST ROUTE ==========================
 
 app.get('/heroku', function (req, res) {
@@ -75,8 +70,25 @@ var cookieParser = require('cookie-parser');
 */
 
 // choose between env variables for Heroku or dev env
-var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
-var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
+
+var secret;
+
+var client_id = () => { if (process.env.CLIENT_ID) {
+    return process.env.CLIENT_ID;
+  } else {
+    secret = require('../secret.js');
+    return secret.CLIENT_ID;
+  }(); // Your client id
+
+
+var client_secret = () => { if (process.env.CLIENT_SECRET) {
+    return process.env.CLIENT_SECRET;
+  } else { 
+    secret = require('../secret.js');
+    return secret.CLIENT_SECRET;
+  }(); // Your secret
+
+
 var env = process.env.NODE_ENV || 'local';
 
 
