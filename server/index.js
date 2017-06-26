@@ -11,8 +11,8 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 //  =========================== API secrets  =========================== 
 
-// // for development only: not for deployment
-// var secret = require('../secret.js');
+// for development only: not for deployment
+var secret = require('../secret.js');
 
 /// ===================== HEROKU TEST ROUTE ==========================
 
@@ -81,7 +81,7 @@ var env = process.env.NODE_ENV || 'local';
 
 
 // setup the url for the Heroku or for the development
-var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https://geo-music.herokuapp.com/callback/';
+var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https://geo-music-staging.herokuapp.com/callback/';
 
 /**
  * Generates a random string containing numbers and letters
