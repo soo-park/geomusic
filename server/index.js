@@ -1,28 +1,21 @@
-/// =========================== BOILER PLATE DEPENDENCIES =============================
+/// ===================== BOILER PLATE DEPENDENCIES ===================
 
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
 var app = express();
+
 app.use(express.static(__dirname + '/../client/dist'));
+
 var items = require('../database');
 
-//  =========================== API secrets  =========================== 
-
-var secret = require('../secret.js');
-
-/// =========================== SPOTIFY DEPENDENCIES =============================
-
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
-
-/// =========================== HEROKU TEST ROUTE =============================
+/// ===================== HEROKU TEST ROUTE ==========================
 
 app.get('/heroku', function (req, res) {
   res.send('Yay world')
 })
 
-/// =========================== BOILER PLATE DB ROUTE =============================
+/// ===================== BOILER PLATE DB ROUTE =========================
 
 app.get('/items', function (req, res) {
   items.selectAll(function(err, data) {
@@ -47,7 +40,18 @@ app.listen(port, function() {
 module.exports = app;
 
 
-/// =========================== SPOTIFY CODES =============================
+//  =========================== API secrets  =========================== 
+
+var secret = require('../secret.js');
+
+/// =========================== SPOTIFY DEPENDENCIES ======================
+
+var request = require('request'); // "Request" library
+var querystring = require('querystring');
+var cookieParser = require('cookie-parser');
+
+
+/// =========================== SPOTIFY app helper =============================
 
 /*
  * This is a node.js script that performs the Authorization Code oAuth2
@@ -63,10 +67,11 @@ module.exports = app;
  * in spotify
 */
 
+// choose between env variables for Heroku or dev env
+var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
+var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
+var redirect_uri = process.env.REDIRECT_URI || secret.REDIRECT_URI; // Your redirect uri
 
-var client_id = secret.CLIENT_ID; // Your client id
-var client_secret = secret.CLIENT_SECRET; // Your secret
-var redirect_uri = secret.REDIRECT_URI; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -84,8 +89,6 @@ var generateRandomString = function(length) {
 };
 
 var stateKey = 'spotify_auth_state';
-
-var app = express();
 
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
@@ -193,5 +196,37 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-// console.log('Listening on 8888');
-// app.listen(8888);
+
+/// =========================== SPOTIFY credential helper =============================
+
+
+// your application requests authorization
+var authOptions = {
+  url: 'https://accounts.spotify.com/api/token',
+  headers: {
+    'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+  },
+  form: {
+    grant_type: 'client_credentials'
+  },
+  json: true
+};
+
+request.post(authOptions, function(error, response, body) {
+  if (!error && response.statusCode === 200) {
+
+    // use the access token to access the Spotify Web API
+    var token = body.access_token;
+    var options = {
+      url: 'https://api.spotify.com/v1/users/jmperezperez',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      json: true
+    };
+    request.get(options, function(error, response, body) {
+      console.log(body);
+    });
+  }
+});
+
