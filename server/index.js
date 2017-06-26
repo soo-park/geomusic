@@ -9,6 +9,11 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 // var items = require('../database');
 
+//  =========================== API secrets  =========================== 
+
+// for development only: not for deployment
+// var secret = require('../secret.js');
+
 /// ===================== HEROKU TEST ROUTE ==========================
 
 app.get('/heroku', function (req, res) {
@@ -39,10 +44,6 @@ app.listen(port, function() {
 
 module.exports = app;
 
-
-//  =========================== API secrets  =========================== 
-
-var secret = require('../secret.js');
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
