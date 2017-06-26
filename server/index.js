@@ -35,9 +35,10 @@ app.get('/heroku', function (req, res) {
 /// =========================== SERVER RUN =============================
 
 
-// app.get('/', function (req, res) {
-//   res.status(200).sendFile('index.html');
-// })
+app.get('/', function (req, res) {
+  console.log('We need root?')
+  res.status(200).sendFile('index.html');
+})
 
 
 // Dynamic port for Heroku deployment
