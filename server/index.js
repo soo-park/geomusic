@@ -48,7 +48,7 @@ var cookieParser = require('cookie-parser');
 /*
  * This is a node.js script that performs the Authorization Code oAuth2
  * flow to authenticate against the Spotify Accounts.
- * to use this file correctly, generate secret.js file in root, and put the
+ * to use this file correctly, generate secret.js file in root, and put the 
  * following string in your file
  *
  * module.exports.CLIENT_ID='your client ID';
@@ -228,7 +228,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      // console.log(body);
+      console.log(body);
     });
   }
 });
