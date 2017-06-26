@@ -35,6 +35,11 @@ app.get('/heroku', function (req, res) {
 /// =========================== SERVER RUN =============================
 
 
+app.get('/', function (req, res) {
+  res.status(200).sendFile('../client/dist/index.html');
+})
+
+
 // Dynamic port for Heroku deployment
 var port = process.env.PORT || 3000;
 
