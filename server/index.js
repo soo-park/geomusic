@@ -12,7 +12,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 //  =========================== API secrets  =========================== 
 
 // for development only: not for deployment
-// var secret = require('../secret.js');
+var secret = require('../secret.js');
 
 /// ===================== HEROKU TEST ROUTE ==========================
 
@@ -35,9 +35,9 @@ app.get('/heroku', function (req, res) {
 /// =========================== SERVER RUN =============================
 
 
-app.get('/', function (req, res) {
-  res.status(200).sendFile('/client/dist/index.html');
-})
+// app.get('/', function (req, res) {
+//   res.status(200).sendFile('index.html');
+// })
 
 
 // Dynamic port for Heroku deployment
