@@ -9,10 +9,10 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 /// ===================== BOILER PLATE DB ROUTE =========================
 
-var items = require('../database');
+var pins = require('../database');
 
-// app.get('/items', function (req, res) {
-//   items.selectAll(function(err, data) {
+// app.get('/pins', function (req, res) {
+//   pins.selectAll(function(err, data) {
 //     if(err) {
 //       res.sendStatus(500);
 //     } else {
@@ -48,7 +48,7 @@ var cookieParser = require('cookie-parser');
 /*
  * This is a node.js script that performs the Authorization Code oAuth2
  * flow to authenticate against the Spotify Accounts.
- * to use this file correctly, generate secret.js file in root, and put the 
+ * to use this file correctly, generate secret.js file in root, and put the
  * following string in your file
  *
  * module.exports.CLIENT_ID='your client ID';

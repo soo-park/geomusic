@@ -21,15 +21,16 @@ db.once('open', function() {
 
 var Schema = mongoose.Schema;
 
-var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+var pinSchema = mongoose.Schema({
+  lat: Number,
+  lng: Number,
+  playlist: String
 });
 
-var Item = mongoose.model('Item', itemSchema);
+var Pin = mongoose.model('Pin', pinSchema);
 
 var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
+  Pin.find({}, function(err, items) {
     if(err) {
       callback(err, null);
     } else {
@@ -38,12 +39,12 @@ var selectAll = function(callback) {
   });
 };
 
-// create a new db item for test:
-// Item.create({ quantity: 2, description: 'test' }, function(err) {
+// create a new db pin for test:
+// Pin.create({ lat: 37.4224764, lng: -122.0842499, playlist: '5NtjgKz4doejP5HJtKXFcS' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
 // })
 
 module.exports.selectAll = selectAll;
-module.exports.Item = Item;
+module.exports.Pin = Pin;
