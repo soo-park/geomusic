@@ -36,7 +36,7 @@ app.get('/heroku', function (req, res) {
 
 
 app.get('/', function (req, res) {
-  res.status(200).sendFile('../client/dist/index.html');
+  res.status(200).sendFile('/client/dist/index.html');
 })
 
 
