@@ -11,8 +11,8 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 //  =========================== API secrets  =========================== 
 
-// // for development only: not for deployment
-// var secret = require('../secret.js');
+// for development only: not for deployment
+var secret = require('../secret.js');
 
 /// ===================== HEROKU TEST ROUTE ==========================
 
