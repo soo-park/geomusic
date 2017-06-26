@@ -7,20 +7,9 @@ var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 
-// var items = require('../database');
-
-//  =========================== API secrets  =========================== 
-
-// // for development only: not for deployment
-// var secret = require('../secret.js');
-
-/// ===================== HEROKU TEST ROUTE ==========================
-
-app.get('/heroku', function (req, res) {
-  res.send('Yay world')
-})
-
 /// ===================== BOILER PLATE DB ROUTE =========================
+
+// var items = require('../database');
 
 // app.get('/items', function (req, res) {
 //   items.selectAll(function(err, data) {
@@ -34,12 +23,10 @@ app.get('/heroku', function (req, res) {
 
 /// =========================== SERVER RUN =============================
 
-
+// Heroku requires the root route though express offers the route without definition
 app.get('/', function (req, res) {
-  console.log('We need root?')
   res.status(200).sendFile('index.html');
 })
-
 
 // Dynamic port for Heroku deployment
 var port = process.env.PORT || 3000;
@@ -57,9 +44,7 @@ var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-
 /// =========================== SPOTIFY app helper =============================
-
 /*
  * This is a node.js script that performs the Authorization Code oAuth2
  * flow to authenticate against the Spotify Accounts.
@@ -68,20 +53,28 @@ var cookieParser = require('cookie-parser');
  *
  * module.exports.CLIENT_ID='your client ID';
  * module.exports.CLIENT_SECRET='your client secret';
- * module.exports.REDIRECT_URI='http://localhost:3000/callback/'
+ * module.exports.REDIRECT_URI=
+ * 'http://localhost:3000/callback/'
  * https://geo-music.herokuapp.com/
  * and make sure you add the http://localhost:3000/callback/ to your white list
  * in spotify
 */
+//  =========================== API secrets  =========================== 
+
+// FIXME: refactor to dynamically change according to local/testing/staging/production
+
+// // for development only: not for deployment
+// var secret = require('../secret.js');
+
+// setup the url for the Heroku or for the development
+var env = process.env.NODE_ENV || 'local';
+var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https://geo-music-staging.herokuapp.com/callback/';
 
 // choose between env variables for Heroku or dev env
 var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
-var env = process.env.NODE_ENV || 'local';
 
-
-// setup the url for the Heroku or for the development
-var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https://geo-music-staging.herokuapp.com/callback/';
+//  ======================================================================== 
 
 /**
  * Generates a random string containing numbers and letters
