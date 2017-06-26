@@ -7,7 +7,7 @@ var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 
-var items = require('../database');
+// var items = require('../database');
 
 /// ===================== HEROKU TEST ROUTE ==========================
 
@@ -17,15 +17,15 @@ app.get('/heroku', function (req, res) {
 
 /// ===================== BOILER PLATE DB ROUTE =========================
 
-app.get('/items', function (req, res) {
-  items.selectAll(function(err, data) {
-    if(err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
-  });
-});
+// app.get('/items', function (req, res) {
+//   items.selectAll(function(err, data) {
+//     if(err) {
+//       res.sendStatus(500);
+//     } else {
+//       res.json(data);
+//     }
+//   });
+// });
 
 /// =========================== SERVER RUN =============================
 
