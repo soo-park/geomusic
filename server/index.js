@@ -3,6 +3,7 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
+var spotify = require('./spotifyHelper.js');
 var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -202,7 +203,6 @@ app.get('/refresh_token', function(req, res) {
 
 /// =========================== SPOTIFY credential helper =============================
 
-
 // your application requests authorization
 var authOptions = {
   url: 'https://accounts.spotify.com/api/token',
@@ -232,4 +232,3 @@ request.post(authOptions, function(error, response, body) {
     });
   }
 });
-
