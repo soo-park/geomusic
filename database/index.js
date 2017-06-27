@@ -26,7 +26,8 @@ var pinSchema = mongoose.Schema({
     type: { type: String },
     coordinates: []
   },
-  playlist: String
+  playlist: String,
+  createdAt: { type: Date, default: Date.now, expires: 86400 }
 });
 pinSchema.index({ location: '2dsphere' });
 var Pin = mongoose.model('Pin', pinSchema);
@@ -60,12 +61,14 @@ var getPinsWithinRadius = function(lng, lat) {
       console.error(err);
     } else {
       console.log('pins within 1 mile:', pins);
+
     }
   })
 }
 // getPinsWithinRadius(-122.407087, 37.783506);
 
 // create a new db pin for test:
+// running it creates an entry every time, comment out after creating:
 // Pin.create({ location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }, function(err) {
 //   if (err) {
 //     console.error(err);
