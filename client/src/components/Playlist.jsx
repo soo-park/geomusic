@@ -8,6 +8,8 @@ class Playlist extends React.Component {
 
   getPlaylist() {
     //componentDidMount
+    // this function will make a get request to the server for playlist data
+    
     //  $.ajax({
     //   url: '/PlaylistItems', 
     //   success: (data) => {
@@ -19,22 +21,12 @@ class Playlist extends React.Component {
     //     console.log('err', err);
     //   }
     // });
-  var dummyPlaylist = [{
-    title: "feeling good",
-    location: {lat: -25.363, lng: 131.044}
-    }, {
-    title: "i got you",
-    location: {lat: -25.363, lng: 131.044}      
-    },{
-    title: "superbad",
-    location: {lat: -25.363, lng: 131.044}      
-    }];
 
-  return dummyPlaylist;
   }
 
 
   render() {
+
   var dummyPlaylist = [{
     title: "feeling good",
     location: {lat: -25.363, lng: 131.044}
@@ -45,10 +37,10 @@ class Playlist extends React.Component {
     title: "superbad",
     location: {lat: -25.363, lng: 131.044}      
     }];
-    
+
     return (
     <div>
-      <h4> List Component </h4>
+      <h4> Playlist </h4>
 
       { dummyPlaylist.map(item => <PlaylistItem item={item}/>)}
     </div>

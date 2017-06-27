@@ -45,7 +45,7 @@ class App extends React.Component {
     }
 
     return (<div>
-      <h1>Item List </h1>
+      
       { display }
     </div>)
   }
