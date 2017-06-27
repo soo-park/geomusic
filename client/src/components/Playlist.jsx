@@ -7,9 +7,8 @@ class Playlist extends React.Component {
   }
 
   getPlaylist() {
-    //componentDidMount
     // this function will make a get request to the server for playlist data
-    
+
     //  $.ajax({
     //   url: '/PlaylistItems', 
     //   success: (data) => {
@@ -26,6 +25,7 @@ class Playlist extends React.Component {
 
 
   render() {
+  // this is some dummy data to show playlist before real data comes through
 
   var dummyPlaylist = [{
     title: "feeling good",
@@ -41,8 +41,9 @@ class Playlist extends React.Component {
     return (
     <div>
       <h4> Playlist </h4>
-
-      { dummyPlaylist.map(item => <PlaylistItem item={item}/>)}
+      <ul>
+      { dummyPlaylist.map(item => <PlaylistItem item={item} songSelected={this.props.songSelected} />)}
+      </ul>
     </div>
   )}
 }

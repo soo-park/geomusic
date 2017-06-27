@@ -2,9 +2,7 @@ import React from 'react';
 
 const Login = (props) => (
   <div>
-    <h4> List Component </h4>
-    There are { props.items.length } items.
-    { props.items.map(item => <ListItem item={item}/>)}
+    <h4> Login Component </h4>
   </div>
 )
 

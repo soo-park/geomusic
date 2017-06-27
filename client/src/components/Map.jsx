@@ -5,11 +5,7 @@ class Map extends React.Component {
     super(props)
   }
 
-
-
   render () {
-
-
     return (
     <div>
     <h4> Map Display </h4>
