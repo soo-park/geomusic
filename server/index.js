@@ -3,7 +3,8 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
-var spotify = require('./spotifyHelper.js');
+var spotifyHelper = require('./spotifyHelper.js');
+var Spotify = require('spotify-web-api-js');
 var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -11,7 +12,6 @@ app.use(express.static(__dirname + '/../client/dist'));
 /// ===================== BOILER PLATE DB ROUTE =========================
 
 // var items = require('../database');
-
 // app.get('/items', function (req, res) {
 //   items.selectAll(function(err, data) {
 //     if(err) {
@@ -148,7 +148,6 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
-
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
@@ -228,7 +227,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      console.log(body);
+      // console.log(body);
     });
   }
 });
