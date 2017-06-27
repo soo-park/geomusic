@@ -17,25 +17,18 @@ class App extends React.Component {
       showPlaylist: false
     }
     this.addSong = this.addSong.bind(this);
+    this.playSong = this.playSong.bind(this);
   }
 
-  // componentDidMount() {
-  //   $.ajax({
-  //     url: '/items', 
-  //     success: (data) => {
-  //       this.setState({
-  //         items: data
-  //       })
-  //     },
-  //     error: (err) => {
-  //       console.log('err', err);
-  //     }
-  //   });
-  // }
+
   addSong() {
     this.setState({
       showPlaylist: true
     })
+  }
+
+  playSong() {
+    console.log('play song clicked')
   }
 
 
@@ -47,7 +40,7 @@ class App extends React.Component {
       display = <div>
                   <Map />
                   <Add addSong={this.addSong}/>
-                  <Play />
+                  <Play playSong={this.playSong}/>
                 </div>
     }
 
