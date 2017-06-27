@@ -24,19 +24,22 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 /// =========================== SERVER RUN =============================
 
-// Heroku requires the root route though express offers the route without definition
-app.get('/', function (req, res) {
-  res.status(200).sendFile('index.html');
-})
-
 // Dynamic port for Heroku deployment
 var port = process.env.PORT || 3000;
+
+// // Heroku requires the root route though express offers the route without definition
+// app.get('/', function (req, res) {
+//   res.status(200).sendFile('index.html');
+// })
+
+
 
 app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
 
-module.exports = app;
+// module.exports = app;
+
 
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
@@ -64,8 +67,8 @@ var cookieParser = require('cookie-parser');
 
 // FIXME: refactor to dynamically change according to local/testing/staging/production
 
-// for development only: not for deployment
-var secret = require('../secret.js');
+// // for development only: not for deployment
+// var secret = require('../secret.js');
 
 // setup the url for the Heroku or for the development
 var env = process.env.NODE_ENV || 'local';
