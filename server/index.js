@@ -11,16 +11,17 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 /// ===================== BOILER PLATE DB ROUTE =========================
 
-// var items = require('../database');
-// app.get('/items', function (req, res) {
-//   items.selectAll(function(err, data) {
-//     if(err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
+var pins = require('../database');
+
+app.get('/pins', function (req, res) {
+  pins.selectAll(function(err, data) {
+    if(err) {
+      res.sendStatus(500);
+    } else {
+      res.json(data);
+    }
+  });
+});
 
 /// =========================== SERVER RUN =============================
 
@@ -52,7 +53,7 @@ var cookieParser = require('cookie-parser');
 /*
  * This is a node.js script that performs the Authorization Code oAuth2
  * flow to authenticate against the Spotify Accounts.
- * to use this file correctly, generate secret.js file in root, and put the 
+ * to use this file correctly, generate secret.js file in root, and put the
  * following string in your file
  *
  * module.exports.CLIENT_ID='your client ID';
@@ -63,7 +64,7 @@ var cookieParser = require('cookie-parser');
  * and make sure you add the http://localhost:3000/callback/ to your white list
  * in spotify
 */
-//  =========================== API secrets  =========================== 
+//  =========================== API secrets  ===========================
 
 // FIXME: refactor to dynamically change according to local/testing/staging/production
 
@@ -78,7 +79,7 @@ var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https:
 var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
 
-//  ======================================================================== 
+//  ========================================================================
 
 /**
  * Generates a random string containing numbers and letters
