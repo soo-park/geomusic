@@ -74,7 +74,7 @@ var cookieParser = require('cookie-parser');
 // FIXME: refactor to dynamically change according to local/testing/staging/production
 
 // for development only: not for deployment
-var secret = require('../secret.js');
+// var secret = require('../secret.js');
 
 // setup the url for the Heroku or for the development
 var env = process.env.NODE_ENV || 'local';
