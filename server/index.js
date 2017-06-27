@@ -11,15 +11,15 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 var Pin = require('../database').pin;
 
-// app.get('/pins', function (req, res) {
-//   pins.selectAll(function(err, data) {
-//     if(err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
+app.get('/pins', function (req, res) {
+  pins.selectAll(function(err, data) {
+    if(err) {
+      res.sendStatus(500);
+    } else {
+      res.json(data);
+    }
+  });
+});
 
 // req.body has to come in the format: { location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }
 app.post('/add', function(req, res) {
@@ -32,19 +32,20 @@ app.post('/add', function(req, res) {
 
 /// =========================== SERVER RUN =============================
 
+// Dynamic port for Heroku deployment
+var port = process.env.PORT || 3000;
+
 // Heroku requires the root route though express offers the route without definition
 app.get('/', function (req, res) {
   res.status(200).sendFile('index.html');
 })
 
-// Dynamic port for Heroku deployment
-var port = process.env.PORT || 3000;
-
 app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
 
-module.exports = app;
+// module.exports = app;
+
 
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
@@ -72,7 +73,7 @@ var cookieParser = require('cookie-parser');
 
 // FIXME: refactor to dynamically change according to local/testing/staging/production
 
-// // for development only: not for deployment
+// for development only: not for deployment
 // var secret = require('../secret.js');
 
 // setup the url for the Heroku or for the development
@@ -156,7 +157,6 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
-
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
@@ -211,7 +211,6 @@ app.get('/refresh_token', function(req, res) {
 
 /// =========================== SPOTIFY credential helper =============================
 
-
 // your application requests authorization
 var authOptions = {
   url: 'https://accounts.spotify.com/api/token',
@@ -237,7 +236,58 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      console.log(body);
+      // console.log(body);
     });
   }
 });
+
+// =================== SPOTIFY Data Retrieval =========================
+// GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
+
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQBwQI8mY95ghLeDiUgnPwC9Af5iclwnqGmwIy5cc0z_uU3R3bFDsMUsBAkkCmJI5MqYhIn6e671nWEK6lyafld-R_e2wzeBVnTjQClLwZX4vA8vI5mT69mJ2x7Xu-VtJqlQZsQIt3kgTynJuT1yt5U0lO94SvZtMm91&refresh_token=AQA2AK3eXG5jaM2VHb9pOBoBx8pkwy0UFpgVaXZAG9qX7EIwYHkscQrqumX8U5_dEyckPBgBbLYAZRYr8QUSG0Vf524-nFET8s-lKENMRy27h8LvutSjhRC2WVi7lgg1e4w'
+var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
+
+var getAllPlayList = (client_id, access_token) => {
+
+  return new Promise((resolve, reject) => {
+
+    const options = {
+      url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + TEMP_TOKEN
+      }
+    };
+
+    request(options, function(err, res, body) {
+      if (err) {
+        reject(err);
+      } else {
+        let json = JSON.stringify(body);
+        resolve(json);
+      }
+    });
+
+  })
+};
+
+app.post('/spotify', function(req, res) {
+
+  var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
+  var access_token = process.env.ACCESS_TOKEN || secret.TEMP_TOKEN;
+
+  getAllPlayList(user_id, access_token)
+  .then((response) => {
+
+    console.log(response);
+    res.status(200).send('OK');
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send('NOT OK');
+  });
+})
+
+
+module.exports.getAllPlayList = getAllPlayList;
+module.exports = app;
