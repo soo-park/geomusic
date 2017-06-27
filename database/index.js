@@ -32,7 +32,7 @@ pinSchema.index({ location: '2dsphere' });
 var Pin = mongoose.model('Pin', pinSchema);
 
 var selectAll = function(callback) {
-  Pin.find({}, function(err, items) {
+  Pin.find({}, function(err, pins) {
     if(err) {
       callback(err, null);
     } else {
@@ -41,12 +41,55 @@ var selectAll = function(callback) {
   });
 };
 
+// get a list of pins within 1 mile:
+// (lng and lat are the longitude and latitude of the current location of a user)
+var getPinsWithinRadius = function(lng, lat) {
+  var milesToRadian = function(miles) {
+    var earthRadiusInMiles = 3959;
+    return miles / earthRadiusInMiles;
+  };
+  var query = {
+    location : {
+        $geoWithin : {
+            $centerSphere : [ [lng, lat], milesToRadian(1) ]
+        }
+    }
+  };
+  Pin.find(query, function(err, pins) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('pins within 1 mile:', pins);
+    }
+  })
+}
+// getPinsWithinRadius(-122.407087, 37.783506);
+
 // create a new db pin for test:
-// Pin.create({ location: { type: 'Point', coordinates: [-179.0, 0.0] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }, function(err) {
+// Pin.create({ location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
 // })
+//
+// Pin.create({ location: { type: 'Point', coordinates: [-122.406646, 37.784612] }, playlist: 'https://open.spotify.com/user/1299590238/playlist/617wZsy9snEuDw2YV7lIq0' }, function(err) {
+//   if (err) {
+//     console.error(err);
+//   }
+// })
+//
+// Pin.create({ location: { type: 'Point', coordinates: [-122.410124, 37.783251] }, playlist: 'https://open.spotify.com/user/1269933467/playlist/0o7b29K3eZ3BNnZswZ9sAC' }, function(err) {
+//   if (err) {
+//     console.error(err);
+//   }
+// })
+// Pin.create({ location: { type: 'Point', coordinates: [-122.388633, 37.790001] }, playlist: 'https://open.spotify.com/user/1269933467/playlist/0o7b29K3eZ3BNnZswZ9sAC' }, function(err) {
+//   if (err) {
+//     console.error(err);
+//   }
+// })
+
+
 
 module.exports.selectAll = selectAll;
 module.exports.Pin = Pin;
