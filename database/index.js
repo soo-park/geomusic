@@ -22,11 +22,13 @@ db.once('open', function() {
 var Schema = mongoose.Schema;
 
 var pinSchema = mongoose.Schema({
-  lat: Number,
-  lng: Number,
+  location: {
+    type: { type: String },
+    coordinates: []
+  },
   playlist: String
 });
-
+pinSchema.index({ location: '2dsphere' });
 var Pin = mongoose.model('Pin', pinSchema);
 
 var selectAll = function(callback) {
@@ -40,7 +42,7 @@ var selectAll = function(callback) {
 };
 
 // create a new db pin for test:
-// Pin.create({ lat: 37.4224764, lng: -122.0842499, playlist: '5NtjgKz4doejP5HJtKXFcS' }, function(err) {
+// Pin.create({ location: { type: 'Point', coordinates: [-179.0, 0.0] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
