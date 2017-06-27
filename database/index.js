@@ -92,7 +92,6 @@ var getPinsWithinRadius = function(lng, lat) {
 //   }
 // })
 
-
-
+module.exports.getPinsWithinRadius = getPinsWithinRadius;
 module.exports.selectAll = selectAll;
-module.exports.Pin = Pin;
+module.exports.pin = Pin;

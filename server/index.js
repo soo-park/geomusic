@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 /// ===================== BOILER PLATE DB ROUTE =========================
 
-var pins = require('../database');
+var Pin = require('../database').pin;
 
 // app.get('/pins', function (req, res) {
 //   pins.selectAll(function(err, data) {
@@ -20,6 +20,15 @@ var pins = require('../database');
 //     }
 //   });
 // });
+
+// req.body has to come in the format: { location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }
+app.post('/add', function(req, res) {
+  Pin.create(req.body, function(err) {
+    if (err) {
+      console.error(err);
+    }
+  })
+})
 
 /// =========================== SERVER RUN =============================
 
@@ -232,9 +241,3 @@ request.post(authOptions, function(error, response, body) {
     });
   }
 });
-
-/// =========================== add to DB =============================
-
-// app.post('/add', function(req, res) {
-//
-// })
