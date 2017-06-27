@@ -3,7 +3,7 @@ import React from 'react';
 
 const Add = (props) => (
   <div>
-    <button >Add Song</button>
+    <button onClick={function(){ props.addSong() }} >Add Song</button>
   </div>
 )
 

@@ -14,24 +14,29 @@ class App extends React.Component {
     super(props);
     this.state = { 
       loggedIn: false,
-      showPlaylist: true
+      showPlaylist: false
     }
+    this.addSong = this.addSong.bind(this);
   }
 
-  componentDidMount() {
-    $.ajax({
-      url: '/items', 
-      success: (data) => {
-        this.setState({
-          items: data
-        })
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
+  // componentDidMount() {
+  //   $.ajax({
+  //     url: '/items', 
+  //     success: (data) => {
+  //       this.setState({
+  //         items: data
+  //       })
+  //     },
+  //     error: (err) => {
+  //       console.log('err', err);
+  //     }
+  //   });
+  // }
+  addSong() {
+    this.setState({
+      showPlaylist: true
+    })
   }
-
 
 
   render () {
@@ -39,7 +44,11 @@ class App extends React.Component {
     if (this.state.showPlaylist) {
       display = <Playlist items={this.state.items}/>
     } else {
-      display = <Map />
+      display = <div>
+                  <Map />
+                  <Add addSong={this.addSong}/>
+                  <Play />
+                </div>
     }
 
     return (<div>
