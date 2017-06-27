@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+
 import Add from './components/Add.jsx';
 import Login from './components/Login.jsx';
 import Map from './components/Map.jsx';
@@ -12,7 +13,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      items: []
+      loggedIn: false,
+      showPlaylist: true
     }
   }
 
@@ -30,11 +32,19 @@ class App extends React.Component {
     });
   }
 
-  render () {
-    return (<div>
-      <h1>Item List</h1>
-      <List items={this.state.items}/>
 
+
+  render () {
+    var display = null;
+    if (this.state.showPlaylist) {
+      display = <Playlist items={this.state.items}/>
+    } else {
+      display = <Map />
+    }
+
+    return (<div>
+      <h1>Item List </h1>
+      { display }
     </div>)
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 const PlaylistItem = (props) => (
   <div>
-    { props.item.description }
+    { props.item.title }
   </div>
 )
 
