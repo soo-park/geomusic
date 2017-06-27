@@ -3,6 +3,8 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
+var spotifyHelper = require('./spotifyHelper.js');
+var Spotify = require('spotify-web-api-js');
 var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -11,31 +13,32 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 var pins = require('../database');
 
-// app.get('/pins', function (req, res) {
-//   pins.selectAll(function(err, data) {
-//     if(err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
+app.get('/pins', function (req, res) {
+  pins.selectAll(function(err, data) {
+    if(err) {
+      res.sendStatus(500);
+    } else {
+      res.json(data);
+    }
+  });
+});
 
 /// =========================== SERVER RUN =============================
+
+// Dynamic port for Heroku deployment
+var port = process.env.PORT || 3000;
 
 // Heroku requires the root route though express offers the route without definition
 app.get('/', function (req, res) {
   res.status(200).sendFile('index.html');
 })
 
-// Dynamic port for Heroku deployment
-var port = process.env.PORT || 3000;
-
 app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
 
-module.exports = app;
+// module.exports = app;
+
 
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
@@ -147,7 +150,6 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
-
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
@@ -202,7 +204,6 @@ app.get('/refresh_token', function(req, res) {
 
 /// =========================== SPOTIFY credential helper =============================
 
-
 // your application requests authorization
 var authOptions = {
   url: 'https://accounts.spotify.com/api/token',
@@ -228,7 +229,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      console.log(body);
+      // console.log(body);
     });
   }
 });
