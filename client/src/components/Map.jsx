@@ -9,7 +9,7 @@ class Map extends React.Component {
     return (
     <div>
     <h4> Map Display </h4>
-    <div id="map"></div>
+    <div className="responsive" id="map"></div>
   </div>
   )}
 }

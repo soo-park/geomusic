@@ -28,22 +28,22 @@ class Playlist extends React.Component {
   // this is some dummy data to show playlist before real data comes through
 
   var dummyPlaylist = [{
-    title: "feeling good",
+    title: "Feeling good",
     location: {lat: -25.363, lng: 131.044}
     }, {
-    title: "i got you",
+    title: "I got you",
     location: {lat: -25.363, lng: 131.044}      
     },{
-    title: "superbad",
+    title: "Superbad",
     location: {lat: -25.363, lng: 131.044}      
     }];
 
     return (
     <div>
       <h4> Playlist </h4>
-      <ul>
+      <div>
       { dummyPlaylist.map(item => <PlaylistItem item={item} songSelected={this.props.songSelected} />)}
-      </ul>
+      </div>
     </div>
   )}
 }

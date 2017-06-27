@@ -2,9 +2,9 @@ import React from 'react';
 
 
 const Play = (props) => (
-  <div>
-    <button onClick={function(){ props.playSong() }}>Play Song</button>
-  </div>
+  
+    <button type="button" onClick={function(){ props.playSong() }} className="btn btn-info" >Play Song</button>
+  
 )
 
 export default Play;

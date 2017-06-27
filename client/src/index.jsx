@@ -45,12 +45,17 @@ class App extends React.Component {
     if (!this.state.loggedIn) {
       display = <Login /> 
     } else if (this.state.showPlaylist) {
-      display = <Playlist items={this.state.items} songSelected={this.songSelected} />
+      display = <div className="container">
+                  <Playlist items={this.state.items} songSelected={this.songSelected} />
+                </div>
     } else {
-      display = <div>
+      display = <div className="container">
                   <Map />
-                  <Add addSong={this.addSong}/>
-                  <Play playSong={this.playSong} />
+                  <br></br>
+                    <div className="btn-group" role="group">
+                      <Add addSong={this.addSong}/>
+                      <Play playSong={this.playSong} />
+                    </div>
                 </div>
     }
     return (<div>{ display }</div>)
