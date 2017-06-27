@@ -28,12 +28,10 @@ app.get('/pins', function (req, res) {
 // Dynamic port for Heroku deployment
 var port = process.env.PORT || 3000;
 
-// // Heroku requires the root route though express offers the route without definition
-// app.get('/', function (req, res) {
-//   res.status(200).sendFile('index.html');
-// })
-
-
+// Heroku requires the root route though express offers the route without definition
+app.get('/', function (req, res) {
+  res.status(200).sendFile('index.html');
+})
 
 app.listen(port, function() {
   console.log('Listening on port ' + port);
