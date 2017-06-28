@@ -12,10 +12,11 @@ import Playlist from './components/Playlist.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       loggedIn: true,
       showPlaylist: false,
-      radioChecked: false
+      radioChecked: false,
+      playlistSelected: null
     }
     this.addSong = this.addSong.bind(this);
     this.playSong = this.playSong.bind(this);
@@ -37,16 +38,30 @@ class App extends React.Component {
     // when this is clicked we can create a post request here to server requesting that
     // song be added to the database
     console.log('Playlist song selected', song);
+    this.setState({
+      playlistSelected: song.name
+    })
   }
 
+  addtoDB() {
+    $.ajax({
+      url: '/newpin',
+      type: 'POST',
+      data: {
+        location: {},
+        playlistUrl: '',
+        playlistName: this.state.playlistSelected
+      }
+    })
+  }
 
   render () {
     var display = null;
     if (!this.state.loggedIn) {
-      display = <Login /> 
+      display = <Login />
     } else if (this.state.showPlaylist) {
       display = <div className="container">
-                  <Playlist items={this.state.items} songSelected={this.songSelected} />
+                  <Playlist songSelected={this.songSelected} />
                 </div>
     } else {
       display = <div className="container">

@@ -5,6 +5,8 @@ var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
 var app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
 
 /// ===================== BOILER PLATE DB ROUTE =========================
@@ -21,8 +23,8 @@ app.get('/pins', function (req, res) {
   });
 });
 
-// req.body has to come in the format: { location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }
-app.post('/add', function(req, res) {
+// req.body has to come in the format: { location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlistUrl: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20', playlistName: 'My Playlist' }
+app.post('/newpin', function(req, res) {
   Pin.create(req.body, function(err) {
     if (err) {
       console.error(err);
@@ -201,6 +203,7 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
+      console.log('access_token', access_token);
       res.send({
         'access_token': access_token
       });
@@ -244,8 +247,27 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQBwQI8mY95ghLeDiUgnPwC9Af5iclwnqGmwIy5cc0z_uU3R3bFDsMUsBAkkCmJI5MqYhIn6e671nWEK6lyafld-R_e2wzeBVnTjQClLwZX4vA8vI5mT69mJ2x7Xu-VtJqlQZsQIt3kgTynJuT1yt5U0lO94SvZtMm91&refresh_token=AQA2AK3eXG5jaM2VHb9pOBoBx8pkwy0UFpgVaXZAG9qX7EIwYHkscQrqumX8U5_dEyckPBgBbLYAZRYr8QUSG0Vf524-nFET8s-lKENMRy27h8LvutSjhRC2WVi7lgg1e4w'
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQDrCyEJqvHZCb1GoANC1K-gXGpCUGpHVSpzpUPTarJqFupGfm-bVnAlm8WBO4wGsw_PWffTkCSgTnU71L5UhUlcBTaFCQUV8QBLLBuGJuP8b9lKmAiz23bWQSQiFMT0vvkf1MUpPGGj1RLvQyRZjLKu3rC_7dU'
 var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
+
+app.get('/getplaylists', function(req, res) {
+  const options = {
+    url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + TEMP_TOKEN
+    }
+  };
+
+  request(options, function(err, response, body) {
+    if (err) {
+      console.error(err);
+    } else {
+      var parsedBody = JSON.parse(body)
+      res.json(parsedBody.items)
+    }
+  });
+})
 
 var getAllPlayList = (client_id, access_token) => {
 
