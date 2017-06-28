@@ -26,7 +26,8 @@ var pinSchema = mongoose.Schema({
     type: { type: String },
     coordinates: []
   },
-  playlist: String,
+  playlistUrl: String,
+  playlistName: String,
   createdAt: { type: Date, default: Date.now, expires: 86400 }
 });
 pinSchema.index({ location: '2dsphere' });
@@ -69,24 +70,25 @@ var getPinsWithinRadius = function(lng, lat) {
 
 // create a new db pin for test:
 // running it creates an entry every time, comment out after creating:
-// Pin.create({ location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlist: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20' }, function(err) {
+
+// Pin.create({ location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlistUrl: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20', playlistName: 'My Playlist' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
 // })
 //
-// Pin.create({ location: { type: 'Point', coordinates: [-122.406646, 37.784612] }, playlist: 'https://open.spotify.com/user/1299590238/playlist/617wZsy9snEuDw2YV7lIq0' }, function(err) {
+// Pin.create({ location: { type: 'Point', coordinates: [-122.406646, 37.784612] }, playlist: 'https://open.spotify.com/user/1299590238/playlist/617wZsy9snEuDw2YV7lIq0', playlistName: 'Cozy' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
 // })
 //
-// Pin.create({ location: { type: 'Point', coordinates: [-122.410124, 37.783251] }, playlist: 'https://open.spotify.com/user/1269933467/playlist/0o7b29K3eZ3BNnZswZ9sAC' }, function(err) {
+// Pin.create({ location: { type: 'Point', coordinates: [-122.410124, 37.783251] }, playlist: 'https://open.spotify.com/user/1269933467/playlist/0o7b29K3eZ3BNnZswZ9sAC', playlistName: 'Favourites' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
 // })
-// Pin.create({ location: { type: 'Point', coordinates: [-122.388633, 37.790001] }, playlist: 'https://open.spotify.com/user/1269933467/playlist/0o7b29K3eZ3BNnZswZ9sAC' }, function(err) {
+// Pin.create({ location: { type: 'Point', coordinates: [-122.388633, 37.790001] }, playlist: 'https://open.spotify.com/user/1269933467/playlist/0o7b29K3eZ3BNnZswZ9sAC', playlistName: 'Playlist' }, function(err) {
 //   if (err) {
 //     console.error(err);
 //   }
