@@ -52,7 +52,8 @@ app.listen(port, function() {
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
-var request = require('request'); // "Request" library
+var request = require('request'); 
+// "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
