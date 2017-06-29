@@ -1,9 +1,15 @@
 <!doctype html>
 <html>
   <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>GeoMusic</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/lib/Elate/css/style.css">
     <style type="text/css">
       #login, #loggedin {
         display: none;
@@ -20,6 +26,7 @@
         width: 100%;
       }
     </style>
+
   </head>
 
   <body>
@@ -44,26 +51,48 @@
       </div>
     </header>
 
-    <div class="container">
-      <div id="login">
-        <h1>Heroku Login with Google Map</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-      </div>
-      <div id="loggedin">
-        <div id="user-profile">
-        </div>
-        <div id="oauth">
-        </div>
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-      </div>
-    </div>
+    <section id="fh5co-home" data-section="home" data-stellar-background-ratio="0.5">
+      <div class="gradient"></div>
+      <div class="container">
+        <div class="text-wrap">
+          <div class="text-inner">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2">
+                <div id="login">
+                  <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+                </div>
 
+                <div id="loggedin">
+                  <div id="user-profile"></div>
+                  <div id="oauth"></div>
+                  <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
+                </div>
+
+               <div id="app"></div>
+               <script type="text/javascript" src="bundle.js"></script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
    
-   <!-- in order for the react components to work the following two lines have been added 
-   and the map div has been commented out -->
    <div id="app"></div>
    <script type="text/javascript" src="bundle.js"></script>
-   <!-- <div id="map"></div> -->
+
+    <footer id="footer" role="contentinfo">
+      <div class="container">
+        <div class="">
+          <div class="col-md-12 text-center">
+            <p>&copy; GeoMusic All Rights Reserved. </p>        
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <!-- Spotify Login -->
 
@@ -228,8 +257,6 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3KHDKK_9Fniw2mrRcLLRl_QhawXHvC0s&callback=initMap">
     </script>
-
-
 
   </body>
 </html>
