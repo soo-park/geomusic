@@ -16,34 +16,41 @@ class App extends React.Component {
       loggedIn: true,
       showPlaylist: false,
       radioChecked: false,
-      playlistSelected: null
+      playlistSelected: null,
+      locations: []
     }
-    this.addSong = this.addSong.bind(this);
+    this.addBtn = this.addBtn.bind(this);
     this.playSong = this.playSong.bind(this);
-    this.songSelected = this.songSelected.bind(this);
+    this.addtoDB = this.addtoDB.bind(this);
   }
 
 
-  addSong() {
+  addBtn() {
+    // ajax call to getPlaylist then give to playlist
     this.setState({
       showPlaylist: true
     })
   }
 
   playSong() {
-    console.log('play song clicked')
-  }
+    // current location hardcoded, due to be get request
+    var lng = -122.408942; 
+    var lat = 37.783696;
 
-  songSelected(song) {
-    // when this is clicked we can create a post request here to server requesting that
-    // song be added to the database
-    console.log('Playlist song selected', song);
-    this.setState({
-      playlistSelected: song.name
+   // get playlistURL of closest pin to current location
+    $.ajax({
+      method: 'GET',
+      url: '/sendClosestPlaylist' + '?' + JSON.stringify(lng) + '=' + JSON.stringify(lat)
     })
+    .done(function(data) {
+    // redirects client to playlistURL
+      window.location.assign(data);
+    })
+
   }
 
-  addtoDB() {
+  addtoDB(playlist) {
+    console.log(playlist)
     $.ajax({
       url: '/newpin',
       type: 'POST',
@@ -61,14 +68,14 @@ class App extends React.Component {
       display = <Login />
     } else if (this.state.showPlaylist) {
       display = <div className="container">
-                  <Playlist songSelected={this.songSelected} />
+                  <Playlist addtoDB={this.addtoDB} />
                 </div>
     } else {
       display = <div className="container">
                   <Map />
                   <br></br>
                     <div className="btn-group" role="group">
-                      <Add addSong={this.addSong}/>
+                      <Add addBtn={this.addBtn}/>
                       <Play playSong={this.playSong} />
                     </div>
                 </div>
