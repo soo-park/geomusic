@@ -3,7 +3,7 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
-//var secret = require('../secret.js')
+// var secret = require('../secret.js')
 var app = express();
 
 app.use(bodyParser.json());
