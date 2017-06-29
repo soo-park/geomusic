@@ -8,9 +8,8 @@ class Map extends React.Component {
   render () {
     return (
     <div>
-    <h4> Map Display </h4>
-    <div id="map"></div>
-  </div>
+      <div id="map"></div>
+    </div>
   )}
 }
 
