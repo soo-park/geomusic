@@ -29,7 +29,7 @@ class Playlist extends React.Component {
     <div>
       <h4> Select a playlist for this location</h4>
       <div>
-      { this.state.playlists.map(item => <PlaylistItem item={item} addtoDB={this.props.addtoDB} />)}
+      { this.state.playlists.map(item => <PlaylistItem item={item} getCurrentLocation={this.props.getCurrentLocation} addtoDB={this.props.addtoDB} />)}
       </div>
     </div>
   )}

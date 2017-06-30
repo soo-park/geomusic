@@ -17,11 +17,12 @@ class App extends React.Component {
       showPlaylist: false,
       radioChecked: false,
       playlistSelected: null,
-      locations: []
+      location: []
     }
     this.addBtn = this.addBtn.bind(this);
     this.playSong = this.playSong.bind(this);
     this.addtoDB = this.addtoDB.bind(this);
+    this.getCurrentLocation = this.getCurrentLocation.bind(this);
   }
 
 
@@ -49,18 +50,50 @@ class App extends React.Component {
 
   }
 
+
   addtoDB(playlist) {
-    console.log(playlist)
+    var context = this;
+    console.log('context.state.location', context.state.location);
     $.ajax({
       url: '/newpin',
       type: 'POST',
       data: {
-        location: { type: 'Point', coordinates: [-122.408942, 37.783696] },
+        location: { type: 'Point', coordinates: [context.state.location[0], context.state.location[1]] },
         playlistUrl: playlist.external_urls.spotify,
         playlistName: playlist.name
       }
     })
   }
+
+// get user's current location
+  getCurrentLocation(playlist) {
+    var context = this;
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+      console.log('Your current position is:');
+      console.log(`Latitude : ${crd.latitude}`);
+      console.log(`Longitude: ${crd.longitude}`);
+
+      context.setState({
+        location: [crd.longitude, crd.latitude]
+      }, function() {
+        context.addtoDB(playlist)
+      })
+    };
+
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    };
+
+    window.navigator.geolocation.getCurrentPosition(success, error, options);
+  }
+
 
   render () {
     var display = null;
@@ -68,7 +101,7 @@ class App extends React.Component {
       display = <Login />
     } else if (this.state.showPlaylist) {
       display = <div className="container">
-                  <Playlist addtoDB={this.addtoDB} />
+                  <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} />
                 </div>
     } else {
       display = <div className="container">

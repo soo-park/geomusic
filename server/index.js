@@ -26,33 +26,33 @@ app.get('/pins', function (req, res) {
 
 // play button get request for playlist in current location
 var db = require('../database');
-
-app.get('/sendClosestPlaylist', function (req, res) {
-  var params = req.url.slice(21).split('=');
-  var lng = JSON.parse(params[0]);
-  var lat = JSON.parse(params[1]);
-
-  db.getPinsWithinRadius(lng, lat, function(err, data){
-    var closestPin = [];
-
-    for (var k = 0; k < data.length; k++ ) {
-      // find nearest pin
-      var a = Math.abs(lng - data[k].location.coordinates[0]);
-      var b = Math.abs(lat - data[k].location.coordinates[1]);
-      var c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-      closestPin.push(c);
-    }
-      var min = Math.min.apply(Math, closestPin);
-      var index = closestPin.indexOf(min);
-
-      // send playlist back to client
-      res.send(data[index].playlistUrl);
-  })
-});
+//
+// app.get('/sendClosestPlaylist', function (req, res) {
+//   var params = req.url.slice(21).split('=');
+//   var lng = JSON.parse(params[0]);
+//   var lat = JSON.parse(params[1]);
+//
+//   db.getPinsWithinRadius(lng, lat, function(err, data){
+//     var closestPin = [];
+//
+//     for (var k = 0; k < data.length; k++ ) {
+//       // find nearest pin
+//       var a = Math.abs(lng - data[k].location.coordinates[0]);
+//       var b = Math.abs(lat - data[k].location.coordinates[1]);
+//       var c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+//       closestPin.push(c);
+//     }
+//       var min = Math.min.apply(Math, closestPin);
+//       var index = closestPin.indexOf(min);
+//
+//       // send playlist back to client
+//       res.send(data[index].playlistUrl);
+//   })
+// });
 
 // add new pin to DB
 app.post('/newpin', function(req, res) {
-
+  console.log('req.body in /newpin', req.body);
  var pinData = {
    location: { type: 'Point', coordinates: [ Number(req.body.location.coordinates[0]), Number(req.body.location.coordinates[1]) ] },
    playlistUrl: req.body.playlistUrl,
@@ -282,7 +282,7 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQBDY6Bc_XvgK7HPcZGBsVKQxcsOPl7CASyr2FTGXo6YBkw0Ym8BRaf7f81vM2souAZeu6D0Dg-ErKS6Y_uxNBQfck5D50ep7bpEtqy34Sw3OLrb2veRugS00Wkl-mG6_bPqP7TbNW0GQ0KZzSsRVXkSRMB9UC8&refresh_token=AQAzWPGz7o0949-5qjZgpidUrNuJjNkkKacA0ssUe4nrVetoNWcQOnzi5n0tme6k9S6efGflxoLmA3pJ7Ofug1GAkTVnUBfROaucfQeR0I3gmtLVsh2bRBALjZTlyfh8xJI'
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQAyzDFCIgqYWimLvlfIZBlgeoJEK0ZL5ZJskkOfwfW9QNQY4oFgjzd5niBN-kbk9SX83zRPpRYE0V4UWJkTwWCjRQ-zepmacj4Z0G4fCk1Iis1N6lj6xsXGdd1kRTgLyUxv3gOThLblAivmUbt7k299543hOq4&refresh_token=AQCNJlh52_vDXBEznReCsiwdvH6nVo_5GyfpdbSyf1iAjiaxPF1Ka8_z3S4ydnlfdKJnDZwiFQ8_O8NBGbSS6A2jwHsZq94OpeI3cMcKIospEZJvjfQAqpUhF7xReiFIBj0'
 // var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
 var user_id = 'annagzh';
 app.get('/getplaylists', function(req, res) {
