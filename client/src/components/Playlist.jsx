@@ -10,6 +10,7 @@ class Playlist extends React.Component {
   }
 
   componentDidMount () {
+    console.log('componentDidMount ran!');
     var context = this;
     $.ajax({
       method: 'GET',

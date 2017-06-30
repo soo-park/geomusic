@@ -31,13 +31,13 @@ app.get('/sendClosestPlaylist', function (req, res) {
   var params = req.url.slice(21).split('=');
   var lng = JSON.parse(params[0]);
   var lat = JSON.parse(params[1]);
-  
+
   db.getPinsWithinRadius(lng, lat, function(err, data){
     var closestPin = [];
 
     for (var k = 0; k < data.length; k++ ) {
       // find nearest pin
-      var a = Math.abs(lng - data[k].location.coordinates[0]);  
+      var a = Math.abs(lng - data[k].location.coordinates[0]);
       var b = Math.abs(lat - data[k].location.coordinates[1]);
       var c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
       closestPin.push(c);
@@ -79,7 +79,7 @@ app.listen(port, function() {
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
-var request = require('request'); 
+var request = require('request');
 // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
@@ -275,9 +275,9 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQDrCyEJqvHZCb1GoANC1K-gXGpCUGpHVSpzpUPTarJqFupGfm-bVnAlm8WBO4wGsw_PWffTkCSgTnU71L5UhUlcBTaFCQUV8QBLLBuGJuP8b9lKmAiz23bWQSQiFMT0vvkf1MUpPGGj1RLvQyRZjLKu3rC_7dU'
-var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
-
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQDhOqy8ntk_UudtA1tVnpfeZxgDv7gBz0YoJnpupbKPjhXnZZWQjhhUS7rQNYSDXQmENU2vuME3nJ5c2CyAS9u7oghXMXqVqu9De-DBaoVstK0IMSXBL9T_t_SQnh92xPUlLMM5QjObud0U0-752VIUumgXYvk&refresh_token=AQBfuJqMq__IF1Hkyh2Qwh-2PBh2Ej_X_3ZZuaoOauD-6kxm9FZve6qr-5MyQcWBjNuN_t4is40CS6JbpBDhMxqELh4OGlfAeEVXrM_Q7RoJtAUgWF4GA2nvpgnmhUvC2VM'
+// var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
+var user_id = 'greenfield8080';
 app.get('/getplaylists', function(req, res) {
   const options = {
     url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
@@ -292,7 +292,8 @@ app.get('/getplaylists', function(req, res) {
       console.error(err);
     } else {
       var parsedBody = JSON.parse(body)
-      res.json(parsedBody.items)
+      console.log('parsedBody.items', parsedBody.items);
+      res.send(parsedBody.items)
     }
   });
 })
