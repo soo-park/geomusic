@@ -62,6 +62,8 @@ app.post('/newpin', function(req, res) {
   Pin.create(pinData, function(err) {
     if (err) {
       console.error(err);
+    } else {
+      res.end();
     }
   })
 })
