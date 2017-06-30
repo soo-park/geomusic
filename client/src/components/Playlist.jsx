@@ -10,6 +10,7 @@ class Playlist extends React.Component {
   }
 
   componentDidMount () {
+    console.log('componentDidMount ran!');
     var context = this;
     $.ajax({
       method: 'GET',
@@ -26,9 +27,9 @@ class Playlist extends React.Component {
   render() {
     return (
     <div>
-      <h4> Playlist </h4>
+      <h4> Select a playlist for this location</h4>
       <div>
-      { this.state.playlists.map(item => <PlaylistItem item={item} addtoDB={this.props.addtoDB} />)}
+      { this.state.playlists.map(item => <PlaylistItem item={item} getCurrentLocation={this.props.getCurrentLocation} addtoDB={this.props.addtoDB} />)}
       </div>
     </div>
   )}

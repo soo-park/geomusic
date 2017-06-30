@@ -26,35 +26,44 @@ app.get('/pins', function (req, res) {
 
 // play button get request for playlist in current location
 var db = require('../database');
+//
+// app.get('/sendClosestPlaylist', function (req, res) {
+//   var params = req.url.slice(21).split('=');
+//   var lng = JSON.parse(params[0]);
+//   var lat = JSON.parse(params[1]);
+//
+//   db.getPinsWithinRadius(lng, lat, function(err, data){
+//     var closestPin = [];
+//
+//     for (var k = 0; k < data.length; k++ ) {
+//       // find nearest pin
+//       var a = Math.abs(lng - data[k].location.coordinates[0]);
+//       var b = Math.abs(lat - data[k].location.coordinates[1]);
+//       var c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+//       closestPin.push(c);
+//     }
+//       var min = Math.min.apply(Math, closestPin);
+//       var index = closestPin.indexOf(min);
+//
+//       // send playlist back to client
+//       res.send(data[index].playlistUrl);
+//   })
+// });
 
-app.get('/sendClosestPlaylist', function (req, res) {
-  var params = req.url.slice(21).split('=');
-  var lng = JSON.parse(params[0]);
-  var lat = JSON.parse(params[1]);
-  
-  db.getPinsWithinRadius(lng, lat, function(err, data){
-    var closestPin = [];
-
-    for (var k = 0; k < data.length; k++ ) {
-      // find nearest pin
-      var a = Math.abs(lng - data[k].location.coordinates[0]);  
-      var b = Math.abs(lat - data[k].location.coordinates[1]);
-      var c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-      closestPin.push(c);
-    }
-      var min = Math.min.apply(Math, closestPin);
-      var index = closestPin.indexOf(min);
-
-      // send playlist back to client
-      res.send(data[index].playlistUrl);
-  })
-});
-
-// req.body has to come in the format: { location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlistUrl: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20', playlistName: 'My Playlist' }
+// add new pin to DB
 app.post('/newpin', function(req, res) {
-  Pin.create(req.body, function(err) {
+  console.log('req.body in /newpin', req.body);
+ var pinData = {
+   location: { type: 'Point', coordinates: [ Number(req.body.location.coordinates[0]), Number(req.body.location.coordinates[1]) ] },
+   playlistUrl: req.body.playlistUrl,
+   playlistName: req.body.playlistName
+ }
+  // var parsedBody = JSON.parse(req.body);
+  Pin.create(pinData, function(err) {
     if (err) {
       console.error(err);
+    } else {
+      res.end();
     }
   })
 })
@@ -79,7 +88,7 @@ app.listen(port, function() {
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
-var request = require('request'); 
+var request = require('request');
 // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
@@ -267,7 +276,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      // console.log(body);
+      console.log(body);
     });
   }
 });
@@ -275,9 +284,9 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQDrCyEJqvHZCb1GoANC1K-gXGpCUGpHVSpzpUPTarJqFupGfm-bVnAlm8WBO4wGsw_PWffTkCSgTnU71L5UhUlcBTaFCQUV8QBLLBuGJuP8b9lKmAiz23bWQSQiFMT0vvkf1MUpPGGj1RLvQyRZjLKu3rC_7dU'
-var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
-
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQAyzDFCIgqYWimLvlfIZBlgeoJEK0ZL5ZJskkOfwfW9QNQY4oFgjzd5niBN-kbk9SX83zRPpRYE0V4UWJkTwWCjRQ-zepmacj4Z0G4fCk1Iis1N6lj6xsXGdd1kRTgLyUxv3gOThLblAivmUbt7k299543hOq4&refresh_token=AQCNJlh52_vDXBEznReCsiwdvH6nVo_5GyfpdbSyf1iAjiaxPF1Ka8_z3S4ydnlfdKJnDZwiFQ8_O8NBGbSS6A2jwHsZq94OpeI3cMcKIospEZJvjfQAqpUhF7xReiFIBj0'
+// var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
+var user_id = 'annagzh';
 app.get('/getplaylists', function(req, res) {
   const options = {
     url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
@@ -292,7 +301,8 @@ app.get('/getplaylists', function(req, res) {
       console.error(err);
     } else {
       var parsedBody = JSON.parse(body)
-      res.json(parsedBody.items)
+      console.log('parsedBody.items', parsedBody);
+      res.send(parsedBody.items)
     }
   });
 })
