@@ -3,6 +3,7 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
+var db = require('../database');
 // var secret = require('../secret.js')// for development only: not for deployment
 var app = express();
 
@@ -25,7 +26,6 @@ app.get('/pins', function (req, res) {
 });
 
 // play button get request for playlist in current location
-var db = require('../database');
 //
 // app.get('/sendClosestPlaylist', function (req, res) {
 //   var params = req.url.slice(21).split('=');
@@ -82,10 +82,6 @@ app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
 
-// module.exports = app;
-
-
-
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
 // "Request" library
@@ -93,8 +89,6 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 /// =========================== SPOTIFY app helper =============================
-
-
 
 // setup the url for the Heroku or for the development
 var env = process.env.NODE_ENV || 'local';
@@ -328,7 +322,3 @@ app.post('/spotify', function(req, res) {
     res.status(500).send('NOT OK');
   });
 })
-
-
-module.exports.getAllPlayList = getAllPlayList;
-module.exports = app;
