@@ -3,7 +3,7 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
-// var secret = require('../secret.js')
+// var secret = require('../secret.js')// for development only: not for deployment
 var app = express();
 
 app.use(bodyParser.json());
@@ -88,32 +88,13 @@ app.listen(port, function() {
 
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
-var request = require('request');
 // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 /// =========================== SPOTIFY app helper =============================
-/*
- * This is a node.js script that performs the Authorization Code oAuth2
- * flow to authenticate against the Spotify Accounts.
- * to use this file correctly, generate secret.js file in root, and put the
- * following string in your file
- *
- * module.exports.CLIENT_ID='your client ID';
- * module.exports.CLIENT_SECRET='your client secret';
- * module.exports.REDIRECT_URI=
- * 'http://localhost:3000/callback/'
- * https://geo-music.herokuapp.com/
- * and make sure you add the http://localhost:3000/callback/ to your white list
- * in spotify
-*/
-//  =========================== API secrets  ===========================
 
-// FIXME: refactor to dynamically change according to local/testing/staging/production
 
-// for development only: not for deployment
-// var secret = require('../secret.js');
 
 // setup the url for the Heroku or for the development
 var env = process.env.NODE_ENV || 'local';
@@ -276,7 +257,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      console.log(body);
+      // console.log(body);
     });
   }
 });
