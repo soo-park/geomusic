@@ -34,7 +34,7 @@ class App extends React.Component {
 
   playSong() {
     // current location hardcoded, due to be get request
-    var lng = -122.408942; 
+    var lng = -122.408942;
     var lat = 37.783696;
 
    // get playlistURL of closest pin to current location
@@ -55,9 +55,9 @@ class App extends React.Component {
       url: '/newpin',
       type: 'POST',
       data: {
-        location: {},
-        playlistUrl: '',
-        playlistName: this.state.playlistSelected
+        location: { type: 'Point', coordinates: [-122.408942, 37.783696] },
+        playlistUrl: playlist.external_urls.spotify,
+        playlistName: playlist.name
       }
     })
   }

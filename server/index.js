@@ -50,9 +50,16 @@ app.get('/sendClosestPlaylist', function (req, res) {
   })
 });
 
-// req.body has to come in the format: { location: { type: 'Point', coordinates: [-122.408942, 37.783696] }, playlistUrl: 'https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20', playlistName: 'My Playlist' }
+// add new pin to DB
 app.post('/newpin', function(req, res) {
-  Pin.create(req.body, function(err) {
+
+ var pinData = {
+   location: { type: 'Point', coordinates: [ Number(req.body.location.coordinates[0]), Number(req.body.location.coordinates[1]) ] },
+   playlistUrl: req.body.playlistUrl,
+   playlistName: req.body.playlistName
+ }
+  // var parsedBody = JSON.parse(req.body);
+  Pin.create(pinData, function(err) {
     if (err) {
       console.error(err);
     }
@@ -267,7 +274,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      // console.log(body);
+      console.log(body);
     });
   }
 });
@@ -275,9 +282,9 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQDhOqy8ntk_UudtA1tVnpfeZxgDv7gBz0YoJnpupbKPjhXnZZWQjhhUS7rQNYSDXQmENU2vuME3nJ5c2CyAS9u7oghXMXqVqu9De-DBaoVstK0IMSXBL9T_t_SQnh92xPUlLMM5QjObud0U0-752VIUumgXYvk&refresh_token=AQBfuJqMq__IF1Hkyh2Qwh-2PBh2Ej_X_3ZZuaoOauD-6kxm9FZve6qr-5MyQcWBjNuN_t4is40CS6JbpBDhMxqELh4OGlfAeEVXrM_Q7RoJtAUgWF4GA2nvpgnmhUvC2VM'
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQBDY6Bc_XvgK7HPcZGBsVKQxcsOPl7CASyr2FTGXo6YBkw0Ym8BRaf7f81vM2souAZeu6D0Dg-ErKS6Y_uxNBQfck5D50ep7bpEtqy34Sw3OLrb2veRugS00Wkl-mG6_bPqP7TbNW0GQ0KZzSsRVXkSRMB9UC8&refresh_token=AQAzWPGz7o0949-5qjZgpidUrNuJjNkkKacA0ssUe4nrVetoNWcQOnzi5n0tme6k9S6efGflxoLmA3pJ7Ofug1GAkTVnUBfROaucfQeR0I3gmtLVsh2bRBALjZTlyfh8xJI'
 // var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
-var user_id = 'greenfield8080';
+var user_id = 'annagzh';
 app.get('/getplaylists', function(req, res) {
   const options = {
     url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
@@ -292,7 +299,7 @@ app.get('/getplaylists', function(req, res) {
       console.error(err);
     } else {
       var parsedBody = JSON.parse(body)
-      console.log('parsedBody.items', parsedBody.items);
+      console.log('parsedBody.items', parsedBody);
       res.send(parsedBody.items)
     }
   });
