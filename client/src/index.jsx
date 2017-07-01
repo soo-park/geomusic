@@ -98,15 +98,16 @@ class App extends React.Component {
 
   render () {
     var display = null;
+
     // if (!this.state.loggedIn) {
     //   display = <Login />
     // } else
     if (this.state.showPlaylist) {
-      display = <div className="container">
+      display = <div>
                   <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} />
                 </div>
     } else {
-      display = <div className="container">
+      display = <div>
                   <Map />
                   <br></br>
                     <div className="btn-group" role="group">

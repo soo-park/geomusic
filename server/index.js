@@ -3,7 +3,8 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
-// var secret = require('../secret.js')
+var db = require('../database');
+// var secret = require('../secret.js'); // for development only: not for deployment
 var app = express();
 
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ app.get('/pins', function (req, res) {
 });
 
 // play button get request for playlist in current location
+
 var db = require('../database');
 // req.body has to have current location of a user
 app.get('/sendClosestPlaylist', function (req, res) {
@@ -82,38 +84,13 @@ app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
 
-// module.exports = app;
-
-
-
 /// =========================== SPOTIFY DEPENDENCIES ======================
 
-var request = require('request');
 // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 /// =========================== SPOTIFY app helper =============================
-/*
- * This is a node.js script that performs the Authorization Code oAuth2
- * flow to authenticate against the Spotify Accounts.
- * to use this file correctly, generate secret.js file in root, and put the
- * following string in your file
- *
- * module.exports.CLIENT_ID='your client ID';
- * module.exports.CLIENT_SECRET='your client secret';
- * module.exports.REDIRECT_URI=
- * 'http://localhost:3000/callback/'
- * https://geo-music.herokuapp.com/
- * and make sure you add the http://localhost:3000/callback/ to your white list
- * in spotify
-*/
-//  =========================== API secrets  ===========================
-
-// FIXME: refactor to dynamically change according to local/testing/staging/production
-
-// for development only: not for deployment
-// var secret = require('../secret.js');
 
 // setup the url for the Heroku or for the development
 var env = process.env.NODE_ENV || 'local';
@@ -276,7 +253,7 @@ request.post(authOptions, function(error, response, body) {
       json: true
     };
     request.get(options, function(error, response, body) {
-      console.log(body);
+      // console.log(body);
     });
   }
 });
@@ -284,9 +261,67 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQA70B6cLxC3wkaoywx4UlLgFhwLK_hzJF-UDu_RTRITksgCobSflpZSQ0CsMgDSXlo8AFZglIE56Du9_c0tapT8JUj6WIPEh8UBq4zV_d6bh0EpN2iL-tPQCTkO9VPgNVXCg9n6HxaiA3fWYXguL7QBig02xtI&refresh_token=AQDg6R1wmMLUILDLZwdEtJs3-sVLl-9LwYauFs0_uVrZm6zCjMk_cdEO3Z_KRbEmsxyVCQMlVKiV-rpM9ahBOoxeNrVpVf2eeDZiTRYSreuI3IqbI1jBNFQae3nMNgF226M'
-var SPOTIFY_ACCESS_TOKEN;
-var SPOTIFY_REFRESH_TOKEN;
+// working code: getting token and playlists of a user (user_id is hardcoded right now)
+var user_id = 'annagzh';
+app.get('/getTokenAndPlaylists', function(req, res) {
+  //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
+
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+
+    const options = {
+      url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + body.access_token
+      }
+    };
+
+    request(options, function(err, response, body) {
+      if (err) {
+        console.error(err);
+      } else {
+        var parsedBody = JSON.parse(body)
+        res.send(parsedBody.items)
+      }
+    });
+  })
+})
+
+
+
+app.get('/getAccessToken', function(req, res) {
+  //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
+
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    console.log(body.access_token);
+    res.send(body.access_token);
+  })
+})
+
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQAyzDFCIgqYWimLvlfIZBlgeoJEK0ZL5ZJskkOfwfW9QNQY4oFgjzd5niBN-kbk9SX83zRPpRYE0V4UWJkTwWCjRQ-zepmacj4Z0G4fCk1Iis1N6lj6xsXGdd1kRTgLyUxv3gOThLblAivmUbt7k299543hOq4&refresh_token=AQCNJlh52_vDXBEznReCsiwdvH6nVo_5GyfpdbSyf1iAjiaxPF1Ka8_z3S4ydnlfdKJnDZwiFQ8_O8NBGbSS6A2jwHsZq94OpeI3cMcKIospEZJvjfQAqpUhF7xReiFIBj0'
+
 // var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
 var user_id = 'annagzh';
 app.get('/getplaylists', function(req, res) {
@@ -349,7 +384,3 @@ app.post('/spotify', function(req, res) {
     res.status(500).send('NOT OK');
   });
 })
-
-
-module.exports.getAllPlayList = getAllPlayList;
-module.exports = app;
