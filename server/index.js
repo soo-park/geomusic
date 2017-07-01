@@ -261,6 +261,45 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
+// working code: getting token and playlists of a user (user_id is hardcoded right now)
+var user_id = 'annagzh';
+app.get('/getTokenAndPlaylists', function(req, res) {
+  //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
+
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+
+    const options = {
+      url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + body.access_token
+      }
+    };
+
+    request(options, function(err, response, body) {
+      if (err) {
+        console.error(err);
+      } else {
+        var parsedBody = JSON.parse(body)
+        res.send(parsedBody.items)
+      }
+    });
+  })
+})
+
+
+
 app.get('/getAccessToken', function(req, res) {
   //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
 
