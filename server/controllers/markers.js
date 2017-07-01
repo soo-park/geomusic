@@ -1,4 +1,4 @@
-var db = require('../database');
+var db = require('../../database');
 
 //  URL Should be in format `/markers/@${latitude},${longitude}`
 
