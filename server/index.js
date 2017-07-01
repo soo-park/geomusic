@@ -284,7 +284,9 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
-var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQBcW3IfkzqbVXhGQQ2_DP-WesgmmaINpXDoy96KHmSmvk99rToZ6OBla1Ec2gJc845tY4Ekb8PDliVo797L432Uj8xgqLUG45bvwxAkGR_Z0SwG8h86M1zH4vweCghT5zdRjq9_kaiqILwMinXJvem5uvv5yo0&refresh_token=AQDDzojni6KjbaYwqd4kxsMaLyCP_c2C3KaVC1iFwcR-zSAFPlHpeRE0REnctcLM2p3_RPciA7WZZgl4LrM8AKnI_t2sKklA-W0fWEnLAu6ayOYARkYQvZ_rx5Gmn_nWcIs'
+var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQA70B6cLxC3wkaoywx4UlLgFhwLK_hzJF-UDu_RTRITksgCobSflpZSQ0CsMgDSXlo8AFZglIE56Du9_c0tapT8JUj6WIPEh8UBq4zV_d6bh0EpN2iL-tPQCTkO9VPgNVXCg9n6HxaiA3fWYXguL7QBig02xtI&refresh_token=AQDg6R1wmMLUILDLZwdEtJs3-sVLl-9LwYauFs0_uVrZm6zCjMk_cdEO3Z_KRbEmsxyVCQMlVKiV-rpM9ahBOoxeNrVpVf2eeDZiTRYSreuI3IqbI1jBNFQae3nMNgF226M'
+var SPOTIFY_ACCESS_TOKEN;
+var SPOTIFY_REFRESH_TOKEN;
 // var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
 var user_id = 'annagzh';
 app.get('/getplaylists', function(req, res) {

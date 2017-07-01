@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>GeoMusic</title>
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/lib/Elate/css/style.css">
 
@@ -21,12 +21,12 @@
           <div class="navbar-header">
             <!-- Mobile Toggle Menu Button -->
         <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
-           <a class="navbar-brand" href="index.html">GeoMusic</a> 
+           <a class="navbar-brand" href="index.html">GeoMusic</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-            
+
               <li class="active"><a href="#" data-nav-section="home"><span>Home</span></a></li>
               <li><a href="#" data-nav-section="work"><span>Work</span></a></li>
             </ul>
@@ -42,9 +42,9 @@
           <div class="text-inner">
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
-                <div id="login">
+                <!-- <div id="login">
                   <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-                </div>
+                </div> -->
 
 
                <div id="app">
@@ -62,7 +62,7 @@
         </div>
       </div>
     </section>
-   
+
    <div id="app"></div>
    <script type="text/javascript" src="bundle.js"></script>
 
@@ -70,7 +70,7 @@
       <div class="container">
         <div class="">
           <div class="col-md-12 text-center">
-            <p>&copy; GeoMusic All Rights Reserved. </p>        
+            <p>&copy; GeoMusic All Rights Reserved. </p>
           </div>
         </div>
         <div class="row">
@@ -208,7 +208,7 @@
             map: map
           });
 
-          navigator.geolocation.getCurrentPosition( 
+          navigator.geolocation.getCurrentPosition(
             pos => {
               map.panTo(new google.maps.LatLng(
                 pos.coords.latitude,
@@ -220,7 +220,7 @@
               alert(err);
             });
 
-          navigator.geolocation.watchPosition( 
+          navigator.geolocation.watchPosition(
             // On success, gets new position
             pos => {
               map.panTo(new google.maps.LatLng(
@@ -246,4 +246,3 @@
 
   </body>
 </html>
-
