@@ -1,5 +1,15 @@
+var secret = require('../../secret.js'); // for development only: not for deployment
+
 module.exports = function(req, res) {
-  //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
+
+  // setup the url for the Heroku or for the development
+  var env = process.env.NODE_ENV || 'local';
+  var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https://geo-music-staging.herokuapp.com/callback/';
+
+  // choose between env variables for Heroku or dev env
+  var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
+  var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
+  var user_id = 'greenfield8080';
 
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -31,3 +41,4 @@ module.exports = function(req, res) {
       }
     });
   })
+}

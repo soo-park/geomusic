@@ -1,5 +1,6 @@
+var db = require('../../database');
+
 module.exports = function (req, res) {
-  // console.log('params', params);
   var params = req.url.slice(21).split('=');
   var lng = JSON.parse(params[0]);
   var lat = JSON.parse(params[1]);
@@ -16,7 +17,6 @@ module.exports = function (req, res) {
     }
       var min = Math.min.apply(Math, closestPin);
       var index = closestPin.indexOf(min);
-// console.log('data in /sendClosestPlaylist:', data);
       // send playlist back to client
       res.send(data[index].playlistUrl);
   })
