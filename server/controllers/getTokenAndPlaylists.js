@@ -13,7 +13,21 @@ module.exports = function(req, res) {
   };
 
   request.post(authOptions, function(error, response, body) {
-    console.log(body.access_token);
-    res.send(body.access_token);
+
+    const options = {
+      url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + body.access_token
+      }
+    };
+
+    request(options, function(err, response, body) {
+      if (err) {
+        console.error(err);
+      } else {
+        var parsedBody = JSON.parse(body)
+        res.send(parsedBody.items)
+      }
+    });
   })
-})
