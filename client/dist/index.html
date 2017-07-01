@@ -193,7 +193,7 @@
     <script>
 
       var allMarkers = [];
-      var currentPosition = {lat: 37.783333, lng: -122.416667};
+      var currentPosition = Object.seal({lat: 37.783333, lng: -122.416667});
 
       function fetchMarkers (pos, cb) {
         fetch(`/markers/@${pos.lat},${pos.lng}`)
@@ -250,6 +250,8 @@
                 pos.coords.latitude,
                 pos.coords.longitude
               ));
+              currentPosition.lat = pos.coords.latitude;
+              currentPosition.lng = pos.coords.longitude;
             },
 
             function(err) {
@@ -272,7 +274,7 @@
 
           setInterval( function() {
             updateMap(google, map);
-          }, 3000)
+          }, 15000)
 
         } else {
           alert('Geolocation is not available on this device. Buy an iPhone and try again!');
