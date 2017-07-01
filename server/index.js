@@ -26,7 +26,7 @@ app.listen(port, function() {
   console.log('Listening on port ' + port);
 });
 
-app.get('/markers/:loc', require('./markers'));
+app.get('/markers/:loc', require('./controllers/markers'));
 
 app.get('/sendClosestPlaylist', function (req, res) {
   var params = req.url.slice(21).split('=');
