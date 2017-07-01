@@ -259,6 +259,26 @@ request.post(authOptions, function(error, response, body) {
 // =================== SPOTIFY Data Retrieval =========================
 // GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
 
+app.get('/getAccessToken', function(req, res) {
+  //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
+
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    console.log(body.access_token);
+    res.send(body.access_token);
+  })
+})
+
 var TEMP_TOKEN = process.env.TEMP_TOKEN || 'BQAyzDFCIgqYWimLvlfIZBlgeoJEK0ZL5ZJskkOfwfW9QNQY4oFgjzd5niBN-kbk9SX83zRPpRYE0V4UWJkTwWCjRQ-zepmacj4Z0G4fCk1Iis1N6lj6xsXGdd1kRTgLyUxv3gOThLblAivmUbt7k299543hOq4&refresh_token=AQCNJlh52_vDXBEznReCsiwdvH6nVo_5GyfpdbSyf1iAjiaxPF1Ka8_z3S4ydnlfdKJnDZwiFQ8_O8NBGbSS6A2jwHsZq94OpeI3cMcKIospEZJvjfQAqpUhF7xReiFIBj0'
 // var user_id = process.env.CLIENT_ID || 'wizzler'; // Your client id
 var user_id = 'annagzh';
