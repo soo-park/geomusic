@@ -27,8 +27,8 @@ var pinSchema = mongoose.Schema({
     coordinates: []
   },
   playlistUrl: String,
-  playlistName: String,
-  createdAt: { type: Date, default: Date.now, expires: 86400 }
+  playlistName: String
+  // createdAt: { type: Date, default: Date.now, expires: 86400 }
 });
 pinSchema.index({ location: '2dsphere' });
 var Pin = mongoose.model('Pin', pinSchema);
