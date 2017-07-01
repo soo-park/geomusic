@@ -49,7 +49,7 @@ app.get('/sendClosestPlaylist', function (req, res) {
       var index = closestPin.indexOf(min);
 // console.log('data in /sendClosestPlaylist:', data);
       // send playlist back to client
-      res.send(data[index].playlistUrl);
+      res.send(data[index]);
   })
 });
 
