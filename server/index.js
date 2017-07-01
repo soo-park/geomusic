@@ -4,7 +4,7 @@ var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
 var db = require('../database');
-// var secret = require('../secret.js')// for development only: not for deployment
+// var secret = require('../secret.js'); // for development only: not for deployment
 var app = express();
 
 app.use(bodyParser.json());
