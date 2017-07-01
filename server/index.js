@@ -4,7 +4,7 @@ var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var bodyParser = require('body-parser');
 var db = require('../database');
-// var secret = require('../secret.js'); // for development only: not for deployment
+//var secret = require('../secret.js'); // for development only: not for deployment
 var app = express();
 
 app.use(bodyParser.json());
@@ -28,6 +28,9 @@ app.get('/pins', function (req, res) {
 // play button get request for playlist in current location
 
 var db = require('../database');
+
+app.get('/markers/:loc', require('./markers'));
+
 // req.body has to have current location of a user
 app.get('/sendClosestPlaylist', function (req, res) {
   // console.log('params', params);

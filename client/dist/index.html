@@ -199,6 +199,7 @@
         fetch(`/markers/@${pos.lat},${pos.lng}`)
           .then( res => res.json() )
           .then( markers => {
+            console.log(markers.length);
             cb(markers);
           });
       }
@@ -232,9 +233,9 @@
       function initMap() {
 
         if ('geolocation' in navigator) {
-          const sf = {lat: 37.783333, lng: -122.416667};
+          var sf = {lat: 37.783333, lng: -122.416667};
 
-          const map = new google.maps.Map(document.getElementById('map'), {
+          var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 17,
             center: sf
           });
@@ -272,9 +273,11 @@
               alert(`Error ${err.code}: ${err.message}`);
             });
 
+          updateMap(google, map);
+
           setInterval( function() {
             updateMap(google, map);
-          }, 15000)
+          }, 30000)
 
         } else {
           alert('Geolocation is not available on this device. Buy an iPhone and try again!');
