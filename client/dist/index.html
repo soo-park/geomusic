@@ -192,46 +192,87 @@
     <!-- Google Map feature -->
     <script>
 
+      var allMarkers = [];
+      var currentPosition = {lat: 37.783333, lng: -122.416667};
+
+      function fetchMarkers (pos, cb) {
+        fetch(`/markers/@${pos.lat},${pos.lng}`)
+          .then( res => res.json() )
+          .then( markers => {
+            cb(markers);
+          });
+      }
+  
+      function drawMarkers (google, map, markers) {
+        markers.forEach(marker => {
+          allMarkers.push(new google.maps.Marker({
+            pos: {
+              lat: marker.location.coordinates[1],
+              lng: marker.location.coordinates[0]
+            },
+            map: map
+          }));
+        }) 
+      }
+
+      function deleteMarkers () {
+        allMarkers.forEach(function(marker) {
+          marker.setMap(null);
+        });
+        allMarkers = [];
+      }
+
+      function updateMap(google, map) {
+        fetchMarkers(currentPosition, function(markers) {
+          deleteMarkers();
+          drawMarkers(google, map, markers);
+        }); 
+      }
+
       function initMap() {
 
         if ('geolocation' in navigator) {
-          //hardcoded coords from tutorial
-          const uluru = {lat: -25.363, lng: 131.044};
+          const sf = {lat: 37.783333, lng: -122.416667};
 
           const map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 4,
-            center: uluru
+            zoom: 17,
+            center: sf
           });
 
           var marker = new google.maps.Marker({
-            position: uluru,
+            position: sf,
             map: map
           });
 
           navigator.geolocation.getCurrentPosition(
-            pos => {
+            function(pos)  {
               map.panTo(new google.maps.LatLng(
                 pos.coords.latitude,
                 pos.coords.longitude
               ));
             },
 
-            err => {
-              alert(err);
+            function(err) {
+              console.error(`Error ${err.code}: ${err.message}`);
+              alert(`Error ${err.code}: ${err.message}`);
             });
 
           navigator.geolocation.watchPosition(
             // On success, gets new position
-            pos => {
+            function(pos) {
               map.panTo(new google.maps.LatLng(
                 pos.coords.latitude,
                 pos.coords.longitude
               ));
             },
-            // Something fucked up
-            err => {
-              alert(err);
+            function(err) {
+              console.error(`Error ${err.code}: ${err.message}`);
+              alert(`Error ${err.code}: ${err.message}`);
             });
+
+          setInterval( function() {
+            updateMap(google, map);
+          }, 3000)
 
         } else {
           alert('Geolocation is not available on this device. Buy an iPhone and try again!');
