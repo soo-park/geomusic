@@ -13,7 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: true,
+      // loggedIn: true,
       showPlaylist: false,
       radioChecked: false,
       playlistSelected: null,
@@ -98,9 +98,10 @@ class App extends React.Component {
 
   render () {
     var display = null;
-    if (!this.state.loggedIn) {
-      display = <Login />
-    } else if (this.state.showPlaylist) {
+    // if (!this.state.loggedIn) {
+    //   display = <Login />
+    // } else
+    if (this.state.showPlaylist) {
       display = <div className="container">
                   <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} />
                 </div>
