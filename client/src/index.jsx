@@ -13,14 +13,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: true,
+      // loggedIn: true,
       showPlaylist: false,
       radioChecked: false,
       playlistSelected: null,
       location: []
     }
     this.addBtn = this.addBtn.bind(this);
-    this.playSong = this.playSong.bind(this);
+    this.playPlaylist = this.playPlaylist.bind(this);
     this.addtoDB = this.addtoDB.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
   }
@@ -33,10 +33,11 @@ class App extends React.Component {
     })
   }
 
-  playSong() {
+  playPlaylist(lng, lat) {
+    console.log(lng, lat);
     // current location hardcoded, due to be get request
-    var lng = -122.408942;
-    var lat = 37.783696;
+    // var lng = -122.408942;
+    // var lat = 37.783696;
 
    // get playlistURL of closest pin to current location
     $.ajax({
@@ -53,7 +54,6 @@ class App extends React.Component {
 
   addtoDB(playlist) {
     var context = this;
-    console.log('context.state.location', context.state.location);
     $.ajax({
       url: '/newpin',
       type: 'POST',
@@ -65,7 +65,7 @@ class App extends React.Component {
     })
   }
 
-// get user's current location
+// get user's current location & call addtoDB
   getCurrentLocation(playlist) {
     var context = this;
     var options = {
@@ -76,14 +76,15 @@ class App extends React.Component {
 
     function success(pos) {
       var crd = pos.coords;
-      console.log('Your current position is:');
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
 
       context.setState({
         location: [crd.longitude, crd.latitude]
       }, function() {
-        context.addtoDB(playlist)
+        if (playlist) {
+          context.addtoDB(playlist)
+        } else {
+          context.playPlaylist(context.state.location[0], context.state.location[1])
+        }
       })
     };
 
@@ -97,10 +98,12 @@ class App extends React.Component {
 
   render () {
     var display = null;
-    if (!this.state.loggedIn) {
-      display = <Login />
-    } else if (this.state.showPlaylist) {
-      display = <div>
+
+    // if (!this.state.loggedIn) {
+    //   display = <Login />
+    // } else
+    if (this.state.showPlaylist) {
+      display = <div className="container">
                   <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} />
                 </div>
     } else {
@@ -109,7 +112,7 @@ class App extends React.Component {
                   <br></br>
                     <div className="btn-group" role="group">
                       <Add addBtn={this.addBtn}/>
-                      <Play playSong={this.playSong} />
+                      <Play playPlaylist={this.playPlaylist} getCurrentLocation={this.getCurrentLocation}/>
                     </div>
                 </div>
     }
