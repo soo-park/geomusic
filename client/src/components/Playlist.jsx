@@ -14,7 +14,7 @@ class Playlist extends React.Component {
     var context = this;
     $.ajax({
       method: 'GET',
-      url: '/getplaylists'
+      url: '/getTokenAndPlaylists'
     })
     .done(function(data) {
       console.log('playlist data', data)
