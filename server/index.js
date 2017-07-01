@@ -36,9 +36,10 @@ var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https:
 // choose between env variables for Heroku or dev env
 var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
-var user_id = 'annagzh';
 
 app.get('/getTokenAndPlaylists', function(req, res) {
+
+  var user_id = req._parsedOriginalUrl.query
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
