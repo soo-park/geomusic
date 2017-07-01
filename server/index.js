@@ -77,11 +77,9 @@ var redirect_uri = env === 'local' ? 'http://localhost:3000/callback/' : 'https:
 var client_id = process.env.CLIENT_ID || secret.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET || secret.CLIENT_SECRET; // Your secret
 
-// working code: getting token and playlists of a user (user_id is hardcoded right now)
-var user_id = 'annagzh';
 app.get('/getTokenAndPlaylists', function(req, res) {
-  //'Authorization': 'Basic ZjQ5ZjY0OWYyMTQwNDY5NjkzY2ZjOTU2ZWU0ZWRlOGQ=:ZDg1ZTI2ZWFjODk2NDYzOGFjMjE2N2FiOGUwN2FhMjE='
 
+  var user_id = req._parsedOriginalUrl.query
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
