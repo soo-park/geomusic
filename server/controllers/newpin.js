@@ -1,3 +1,5 @@
+var Pin = require('../../database').pin;
+
 module.exports = function(req, res) {
  var pinData = {
    location: { type: 'Point', coordinates: [ Number(req.body.location.coordinates[0]), Number(req.body.location.coordinates[1]) ] },
