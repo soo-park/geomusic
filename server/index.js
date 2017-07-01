@@ -1,4 +1,4 @@
-//var secret = require('../secret.js'); // for development only: not for deployment
+// var secret = require('../secret.js'); // for development only: not for deployment
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
