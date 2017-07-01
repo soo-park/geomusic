@@ -10,14 +10,13 @@ class Playlist extends React.Component {
   }
 
   componentDidMount () {
-    console.log('componentDidMount ran!');
     var context = this;
     $.ajax({
       method: 'GET',
-      url: '/getplaylists'
+      url: '/getTokenAndPlaylists',
+      data: context.props.username
     })
     .done(function(data) {
-      console.log('playlist data', data)
       context.setState({
         playlists: data
       })
