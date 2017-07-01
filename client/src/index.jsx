@@ -18,6 +18,7 @@ class App extends React.Component {
       radioChecked: false,
       playlistSelected: null,
       location: [],
+      currentPlaylist: null,
       showInput: false,
       username: ''
     }
@@ -38,6 +39,7 @@ class App extends React.Component {
     })
   }
 
+
   submitBtn(username) {
     this.setState({
       showInput: false,
@@ -46,6 +48,7 @@ class App extends React.Component {
     })
   }
 
+
   playPlaylist(lng, lat) {
     $.ajax({
       method: 'GET',
@@ -53,10 +56,31 @@ class App extends React.Component {
     })
     .done(function(data) {
     // redirects client to playlistURL
-      window.location.assign(data);
+      window.location.assign(data.playlistUrl);
     })
 
   }
+
+  componentDidMount () { 
+
+  //fire retrievelocalplaylist function and set currentplaylist tag
+  var _this = this;
+  var lng = -122.408942;
+  var lat = 37.783696;
+
+  setInterval(function(){
+    $.ajax({
+      method: 'GET',
+      url: '/sendClosestPlaylist' + '?' + JSON.stringify(lng) + '=' + JSON.stringify(lat)
+    })
+      .done(function(data) {
+      // redirects client to playlistURL
+      _this.setState({
+      currentPlaylist: data.playlistName
+      })      
+    })
+  }, 3000)
+}
 
 
   addtoDB(playlist) {
@@ -125,6 +149,7 @@ class App extends React.Component {
                       <Add addBtn={this.addBtn}/>
                       <Play playPlaylist={this.playPlaylist} getCurrentLocation={this.getCurrentLocation}/>
                     </div>
+                    <h2>{this.state.currentPlaylist}</h2>
                 </div>
     }
     return (<div>{ display }</div>)
