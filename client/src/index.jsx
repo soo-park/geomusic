@@ -103,7 +103,7 @@ class App extends React.Component {
     //   display = <Login />
     // } else
     if (this.state.showPlaylist) {
-      display = <div className="container">
+      display = <div>
                   <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} />
                 </div>
     } else {
