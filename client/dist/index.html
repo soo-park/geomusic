@@ -189,11 +189,20 @@
       })();
     </script>
 
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3KHDKK_9Fniw2mrRcLLRl_QhawXHvC0s">
+    </script>
+
     <!-- Google Map feature -->
     <script>
 
       var allMarkers = [];
-      var currentPosition = Object.seal({lat: 37.783333, lng: -122.416667});
+      var currentPosition = {lat: 37.783333, lng: -122.416667};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 17,
+        center: currentPosition
+      });
 
       function fetchMarkers (pos, cb) {
         fetch(`/markers/@${pos.lat},${pos.lng}`)
@@ -204,15 +213,17 @@
           });
       }
   
-      function drawMarkers (google, map, markers) {
+      function drawMarkers (markers) {
         markers.forEach(marker => {
-          allMarkers.push(new google.maps.Marker({
-            pos: {
-              lat: marker.location.coordinates[1],
-              lng: marker.location.coordinates[0]
-            },
+          var gMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(
+              marker.location.coordinates[1],
+              marker.location.coordinates[0]
+            ),
             map: map
-          }));
+          });
+          allMarkers.push(gMarker);
+          console.log(gMarker);
         }) 
       }
 
@@ -223,27 +234,16 @@
         allMarkers = [];
       }
 
-      function updateMap(google, map) {
+      function updateMap() {
         fetchMarkers(currentPosition, function(markers) {
           deleteMarkers();
-          drawMarkers(google, map, markers);
+          drawMarkers(markers);
         }); 
       }
 
       function initMap() {
 
         if ('geolocation' in navigator) {
-          var sf = {lat: 37.783333, lng: -122.416667};
-
-          var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 17,
-            center: sf
-          });
-
-          var marker = new google.maps.Marker({
-            position: sf,
-            map: map
-          });
 
           navigator.geolocation.getCurrentPosition(
             function(pos)  {
@@ -273,10 +273,10 @@
               alert(`Error ${err.code}: ${err.message}`);
             });
 
-          updateMap(google, map);
+          updateMap(map);
 
           setInterval( function() {
-            updateMap(google, map);
+            updateMap(map);
           }, 30000)
 
         } else {
@@ -284,11 +284,10 @@
         }
       }
 
+      window.onload = function() { initMap(); }
+
     </script>
 
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3KHDKK_9Fniw2mrRcLLRl_QhawXHvC0s&callback=initMap">
-    </script>
 
   </body>
 </html>

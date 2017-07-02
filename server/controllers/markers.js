@@ -1,9 +1,12 @@
 var db = require('../../database');
 
+//  URL Should be in format `/markers/@${latitude},${longitude}`
+
 module.exports = function(req, res) {
   if (req.params.loc[0] !== '@') {
     res.status(400).send('url format should be `@${latitude},${longitude}`')
   } else {
+
     var lat = parseFloat(req.params.loc.slice( 1, req.params.loc.indexOf(',') )); 
     var lng = parseFloat(req.params.loc.slice( req.params.loc.indexOf(',') + 1 ));
 
@@ -14,5 +17,6 @@ module.exports = function(req, res) {
         res.json(markers); 
       }
     });
+
   }
 };
