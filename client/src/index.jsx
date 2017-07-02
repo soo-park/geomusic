@@ -7,7 +7,7 @@ import Login from './components/Login.jsx';
 import Map from './components/Map.jsx';
 import Play from './components/Play.jsx';
 import Playlist from './components/Playlist.jsx';
-
+import Input from './components/Input.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,39 +17,70 @@ class App extends React.Component {
       showPlaylist: false,
       radioChecked: false,
       playlistSelected: null,
-      location: []
+      location: [],
+      currentPlaylist: null,
+      showInput: false,
+      username: ''
     }
     this.addBtn = this.addBtn.bind(this);
     this.playPlaylist = this.playPlaylist.bind(this);
     this.addtoDB = this.addtoDB.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
+    this.submitBtn = this.submitBtn.bind(this);
   }
 
-
   addBtn() {
-    // ajax call to getPlaylist then give to playlist
+
+    // this.setState({
+    //   showPlaylist: true
+    // })
     this.setState({
-      showPlaylist: true
+      showInput: true
     })
   }
 
-  playPlaylist(lng, lat) {
-    console.log(lng, lat);
-    // current location hardcoded, due to be get request
-    // var lng = -122.408942;
-    // var lat = 37.783696;
 
-   // get playlistURL of closest pin to current location
+  submitBtn(username) {
+    this.setState({
+      showInput: false,
+      showPlaylist: true,
+      username: username
+    })
+  }
+
+
+  playPlaylist(lng, lat) {
     $.ajax({
       method: 'GET',
       url: '/sendClosestPlaylist' + '?' + JSON.stringify(lng) + '=' + JSON.stringify(lat)
     })
     .done(function(data) {
     // redirects client to playlistURL
-      window.location.assign(data);
+      window.location.assign(data.playlistUrl);
     })
 
   }
+
+  componentDidMount () { 
+
+  //fire retrievelocalplaylist function and set currentplaylist tag
+  var _this = this;
+  var lng = -122.408942;
+  var lat = 37.783696;
+
+  setInterval(function(){
+    $.ajax({
+      method: 'GET',
+      url: '/sendClosestPlaylist' + '?' + JSON.stringify(lng) + '=' + JSON.stringify(lat)
+    })
+      .done(function(data) {
+      // redirects client to playlistURL
+      _this.setState({
+      currentPlaylist: data.playlistName
+      })      
+    })
+  }, 3000)
+}
 
 
   addtoDB(playlist) {
@@ -102,9 +133,13 @@ class App extends React.Component {
     // if (!this.state.loggedIn) {
     //   display = <Login />
     // } else
-    if (this.state.showPlaylist) {
+    if (this.state.showInput) {
+      display =  <div>
+                    <Input submitBtn={this.submitBtn} />
+                </div>
+    } else if (this.state.showPlaylist) {
       display = <div>
-                  <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} />
+                  <Playlist getCurrentLocation={this.getCurrentLocation} addtoDB={this.addtoDB} username={this.state.username}/>
                 </div>
     } else {
       display = <div>
@@ -114,6 +149,7 @@ class App extends React.Component {
                       <Add addBtn={this.addBtn}/>
                       <Play playPlaylist={this.playPlaylist} getCurrentLocation={this.getCurrentLocation}/>
                     </div>
+                    <h2>{this.state.currentPlaylist}</h2>
                 </div>
     }
     return (<div>{ display }</div>)
