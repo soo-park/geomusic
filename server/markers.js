@@ -2,8 +2,6 @@ var db = require('../database');
 
 //  URL Should be in format `/markers/@${latitude},${longitude}`
 
-// This route needs to be added to server for markers to work
-//app.get('/markers/:loc', require('./markers'));
 module.exports = function(req, res) {
   if (req.params.loc[0] !== '@') {
     res.status(400).send('url format should be `@${latitude},${longitude}`')
