@@ -40,7 +40,7 @@ var selectAll = function(callback) {
   });
 };
 
-// get a list of pins within 1 mile:
+// get a list of pins within 50 mile:
 // (lng and lat are the longitude and latitude of the current location of a user)
 var getPinsWithinRadius = function(lng, lat, callback) {
   var milesToRadian = function(miles) {
@@ -50,7 +50,7 @@ var getPinsWithinRadius = function(lng, lat, callback) {
   var query = {
     location : {
         $geoWithin : {
-            $centerSphere : [ [lng, lat], milesToRadian(1) ]
+            $centerSphere : [ [lng, lat], milesToRadian(50) ]
         }
     }
   };
